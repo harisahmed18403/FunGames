@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <div class="header">
       <h2>Player {{ players[currentPlayer] }} turn</h2>
       <h2>{{ message }}</h2>
@@ -11,7 +11,7 @@
     </div>
     <TTTBoard :board="board" @cellClicked="setCell" />
     <button @click="resetBoard">Reset</button>
-  </div>
+  </main>
 </template>
 
 <style scoped>

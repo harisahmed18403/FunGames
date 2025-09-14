@@ -1,4 +1,11 @@
+:root {
+  --p1-color: #ff4d4d;
+  --p2-color: #4d79ff;
+}
+
 main {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

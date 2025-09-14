@@ -4,6 +4,7 @@
 
     <div class="games">
       <RouterLink to="/tictactoe">Tic Tac Toe</RouterLink>
+      <RouterLink to="/connect4">Connect 4</RouterLink>
     </div>
   </main>
 </template>

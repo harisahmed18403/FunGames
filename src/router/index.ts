@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: '/connect4',
       name: 'connect4',
-      component: TicTacToe,
+      component: Connect4,
     },
   ],
 })
