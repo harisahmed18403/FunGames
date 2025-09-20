@@ -1,14 +1,13 @@
 <template>
-  <main>
-    <div class="header">
-      <h2>Player {{ currentPlayer }} turn</h2>
-      <h2>{{ message }}</h2>
+  <main class="flex gap-2">
+    <div class="flex">
+      <h2 v-if="message">{{ message }}</h2>
+      <h2 v-else>Player {{ currentPlayer }} turn</h2>
     </div>
     <C4Board :board="board" @column-clicked="addPiece" />
     <button @click="resetBoard">Reset Board</button>
   </main>
 </template>
-<style scoped></style>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useScore } from '@/stores/store'

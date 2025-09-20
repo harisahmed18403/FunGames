@@ -1,10 +1,10 @@
 <template>
-  <main>
-    <div class="header">
-      <h2>Player {{ players[currentPlayer] }} turn</h2>
-      <h2>{{ message }}</h2>
+  <main class="flex gap-2">
+    <div class="flex between center">
+      <h2 v-if="message">{{ message }}</h2>
+      <h2 v-else>Player {{ players[currentPlayer] }} turn</h2>
     </div>
-    <div class="settings">
+    <div class="flex gap-1">
       <button @click="decrementSize">-</button>
       <span>Size: {{ size }}</span>
       <button @click="incrementSize">+</button>
@@ -14,14 +14,6 @@
   </main>
 </template>
 
-<style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-</style>
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 

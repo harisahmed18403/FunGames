@@ -2,26 +2,35 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import TicTacToe from '@/views/TicTacToe.vue'
 import Connect4 from '@/views/Connect4.vue'
+import HangMan from '@/views/HangMan.vue'
+
+export const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: HomePage,
+  },
+  // Games
+  {
+    path: '/tictactoe',
+    name: 'TicTacToe',
+    component: TicTacToe,
+  },
+  {
+    path: '/connect4',
+    name: 'Connect4',
+    component: Connect4,
+  },
+  {
+    path: '/hangman',
+    name: 'HangMan',
+    component: HangMan,
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomePage,
-    },
-    {
-      path: '/tictactoe',
-      name: 'tictactoe',
-      component: TicTacToe,
-    },
-    {
-      path: '/connect4',
-      name: 'connect4',
-      component: Connect4,
-    },
-  ],
+  routes: routes,
 })
 
 export default router
