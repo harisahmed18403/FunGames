@@ -83,7 +83,7 @@ main {
 }
 
 button {
-  background-color: #007bff;
+  background-color: var(--other-color);
   color: white;
   border: none;
   border-radius: var(--b-radius);
@@ -94,7 +94,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  opacity: 0.8;
 }
 
 button:focus {

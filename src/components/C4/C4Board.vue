@@ -1,42 +1,37 @@
 <template>
   <div>
-    <div class="board">
-      <div v-for="(row, rowIndex) in props.board" :key="`row-${rowIndex}`" class="row">
+    <div class="flex column center">
+      <div v-for="(row, rowIndex) in props.board" :key="`row-${rowIndex}`" class="flex">
         <div v-for="(cell, colIndex) in row" :key="`cell-${colIndex}`" class="cell">
           <div v-if="cell == '1'" class="piece piece-1"></div>
           <div v-else-if="cell == '2'" class="piece piece-2"></div>
         </div>
       </div>
-    </div>
-    <div class="controls">
-      <div
-        v-for="col in cols"
-        :key="`col-${col}`"
-        class="control"
-        @click="emit('columnClicked', col - 1)"
-      >
-        <p>{{ col }}</p>
+      <div class="flex">
+        <div v-for="col in cols" :key="`col-${col}`" class="flex column center">
+          <div class="cell" style="border-color: white">
+            <button @click="emit('columnClicked', col - 1)">{{ col }}</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
-.row {
-  display: flex;
-}
 .cell {
-  width: 50px;
-  height: 50px;
+  width: 4rem;
+  height: 4rem;
   border: 1px solid black;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  padding: 0%;
 }
 
 .piece {
-  width: 40px;
-  height: 40px;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
 }
 
@@ -48,20 +43,10 @@
   background-color: var(--p2-color);
 }
 
-.controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.control {
-  width: 50px;
-  height: 40px;
-  border: 1px solid black;
-  text-align: center;
+button {
+  width: 4rem;
+  height: 4rem;
   font-weight: bold;
-  align-items: center;
-  justify-content: center;
 }
 </style>
 <script setup lang="ts">
