@@ -4,7 +4,7 @@
       <h2 v-if="message">{{ message }}</h2>
       <h2 v-else>Player {{ currentPlayer }} turn</h2>
     </div>
-    <C4Board :board="board" @column-clicked="addPiece" />
+    <C4Board :board="board" :pause-input="pauseInput" @column-clicked="addPiece" />
     <button @click="resetBoard">Reset Board</button>
   </main>
 </template>
@@ -17,13 +17,14 @@ import C4Board from '@/components/C4/C4Board.vue'
 const minRows = 6
 const minCols = 7
 
-const rows = ref(minRows)
-const cols = ref(minCols)
+const rows = ref<number>(minRows)
+const cols = ref<number>(minCols)
 const board = ref<string[][]>([])
 
 // Player setup
-const currentPlayer = ref(0)
+const currentPlayer = ref<number>(0)
 const scoreStore = useScore()
+const pauseInput = ref<boolean>(false)
 const message = ref('')
 
 onMounted(() => {
@@ -39,24 +40,26 @@ function resetBoard() {
     }
     board.value.push(row)
   }
+  pauseInput.value = false
 }
 
 function addPiece(col: number) {
+  if (pauseInput.value == true) {
+    return
+  }
   for (let r = rows.value - 1; r >= 0; r--) {
     if (board.value[r][col] === '') {
       board.value[r][col] = currentPlayer.value === 0 ? '1' : '2'
       if (checkWin(r, col)) {
-        displayMessage(`Player ${currentPlayer.value} wins!`)
         if (currentPlayer.value === 0) {
           scoreStore.player1Score++
         } else {
           scoreStore.player2Score++
         }
-        resetBoard()
+        displayMessage(`Player ${currentPlayer.value} wins!`)
       } else if (isBoardFull()) {
-        displayMessage("It's a tie!")
         scoreStore.tieScore++
-        resetBoard()
+        displayMessage("It's a tie!")
       } else {
         currentPlayer.value = 1 - currentPlayer.value
       }
@@ -122,9 +125,10 @@ function checkWin(row: number, col: number) {
 
 function displayMessage(msg: string) {
   message.value = msg
+  pauseInput.value = true
   setTimeout(() => {
     message.value = ''
-  }, 2000)
-  resetBoard()
+    resetBoard()
+  }, 3000)
 }
 </script>

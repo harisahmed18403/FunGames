@@ -9,7 +9,7 @@
       <span>Size: {{ size }}</span>
       <button @click="incrementSize">+</button>
     </div>
-    <TTTBoard :board="board" @cellClicked="setCell" />
+    <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
     <button @click="resetBoard">Reset</button>
   </main>
 </template>
@@ -27,8 +27,9 @@ const board = reactive<string[][]>([])
 
 // Player setup
 const players = ['X', 'O']
-const currentPlayer = ref(0)
+const currentPlayer = ref<number>(0)
 const scoreStore = useScore()
+const pauseInput = ref<boolean>(false)
 
 // Win/Tie message
 const message = ref('')
@@ -46,24 +47,23 @@ function resetBoard() {
     }
     board.push(row)
   }
+  pauseInput.value = false
 }
 
 function setCell(col: number, row: number) {
   if (board[row][col] === '') {
     board[row][col] = players[currentPlayer.value]
     if (checkWin()) {
-      displayMessage(`Player ${currentPlayer.value} wins!`)
-      resetBoard()
       if (currentPlayer.value === 0) {
         scoreStore.player1Score++
       } else {
         scoreStore.player2Score++
       }
+      gameEnd(`Player ${currentPlayer.value} wins!`)
       return
     } else if (checkTie()) {
-      displayMessage(`Its a Tie!`)
-      resetBoard()
       scoreStore.tieScore++
+      gameEnd(`Its a Tie!`)
       return
     }
     switchPlayer()
@@ -100,12 +100,13 @@ function checkTie() {
   return board.flat().every((cell) => cell !== '')
 }
 
-function displayMessage(msg: string) {
+function gameEnd(msg: string) {
   message.value = msg
+  pauseInput.value = true
   setTimeout(() => {
     message.value = ''
-  }, 2000)
-  resetBoard()
+    resetBoard()
+  }, 3000)
 }
 
 function switchPlayer() {
