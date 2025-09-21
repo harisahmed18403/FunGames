@@ -1,14 +1,14 @@
 <template>
   <div class="flex column center gap-3">
-    <div class="flex row between first-baseline">
-      <div class="hangman flex column">
-        <p>{{ triesLeftP1 }}</p>
+    <div class="flex row between first-baseline gap-3">
+      <div class="hangman flex column center p1">
+        <p>Player 1: {{ triesLeftP1 }} attempts left</p>
         <div class="flex row" v-for="i in p1HmanStage" :key="i">
           <span v-for="j in hman[0].length" :key="j">{{ hman[i - 1][j - 1] }}</span>
         </div>
       </div>
-      <div class="hangman flex column">
-        <p>{{ triesLeftP2 }}</p>
+      <div class="hangman flex column center p2">
+        <p>Player 2: {{ triesLeftP2 }} attempts left</p>
         <div class="flex row" v-for="i in p2HmanStage" :key="i">
           <span v-for="j in hman[0].length" :key="j">{{ hman[i - 1][j - 1] }}</span>
         </div>
@@ -29,17 +29,26 @@
 
 .hangman {
   font-size: large;
+  border: thin solid #ddd;
+  padding: 5rem;
+  background-color: #ddd;
+}
+
+.hangman.active {
+  background-color: white;
 }
 
 .hangman span {
   padding: 0%;
   margin: 0;
   width: 1ch;
+  height: 2ch;
+  font-weight: 900;
 }
 </style>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
   guess: {
@@ -60,6 +69,8 @@ const props = defineProps({
   },
 })
 
+// Char array representing hang man
+// Each index is a 'stage'
 const hman = ref<Array<Array<String>>>([
   ['_', '_', '_', '_', '', '', ''],
   ['|', '', '', '|', '', '', ''],
@@ -70,29 +81,18 @@ const hman = ref<Array<Array<String>>>([
   ['_', '_', '_', '_', '_', '_', '_'],
 ])
 
-const p1HmanStage = ref<number>(0)
-const p2HmanStage = ref<number>(0)
+const p1HmanStage = computed(() => {
+  return getHmanStage(props.triesLeftP1)
+})
 
-watch(
-  () => props.triesLeftP1,
-  (newTriesLeft) => {
-    p1HmanStage.value = getHmanStage(newTriesLeft)
-  },
-  { immediate: true },
-)
+const p2HmanStage = computed(() => {
+  return getHmanStage(props.triesLeftP2)
+})
 
-watch(
-  () => props.triesLeftP2,
-  (newTriesLeft) => {
-    p2HmanStage.value = getHmanStage(newTriesLeft)
-  },
-  { immediate: true },
-)
-
-// Return the 'stage' at which teh hman is at
+// Return the 'stage' at which the hman is at
 function getHmanStage(triesLeft: number) {
-  let result = props.maxTries / triesLeft
-  result = Math.max(0, Math.min(hman.value.length - 1, result))
-  return Math.floor(result)
+  let percent = triesLeft / props.maxTries
+  let hmanStage = Math.floor((1 - percent) * hman.value.length)
+  return hmanStage
 }
 </script>

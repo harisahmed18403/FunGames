@@ -14,6 +14,7 @@
   padding: 1rem;
   background-color: #f8f8f8;
   border-bottom: 1px solid #ddd;
+  height: 4rem;
 }
 </style>
 <script setup lang="ts">

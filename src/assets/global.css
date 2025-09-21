@@ -1,6 +1,8 @@
 :root {
   --p1-color: #ff4d4d;
   --p2-color: #4d79ff;
+  --other-color: rgb(91, 205, 91);
+  --b-radius: 4px;
 }
 
 main {
@@ -8,7 +10,16 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.p1 {
+  color: var(--p1-color);
+}
+
+.p2 {
+  color: var(--p2-color);
 }
 
 .flex {
@@ -71,21 +82,32 @@ main {
   margin-top: 3rem;
 }
 
-.button {
+button {
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--b-radius);
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.button:hover {
+button:hover {
   background-color: #0056b3;
 }
 
-.button:focus {
+button:focus {
   outline: none;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:disabled:hover {
+  background-color: #cccccc;
 }
