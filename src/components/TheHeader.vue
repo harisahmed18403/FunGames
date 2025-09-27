@@ -1,10 +1,12 @@
 <template>
-  <div class="flex center head">
-    <RouterLink to="/" class="route">Home</RouterLink>
+  <div class="flex center head pad-x-1 between">
+    <RouterLink to="/">Home</RouterLink>
 
-    <p class="p1">Player 1 wins: {{ scoreStore.player1Score }}</p>
-    <p class="p2">Player 2 wins: {{ scoreStore.player2Score }}</p>
-    <p>Ties: {{ scoreStore.tieScore }}</p>
+    <div class="flex row gap-2 no-wrap scroll-x">
+      <p v-for="(stat, index) in playerStore.playerStatsTotals" class="p1">
+        Player {{ index + 1 }} wins: {{ stat.wins }}
+      </p>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -19,7 +21,7 @@
 </style>
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useScore } from '@/stores/store'
+import { usePlayers } from '@/stores/store'
 
-const scoreStore = useScore()
+const playerStore = usePlayers()
 </script>

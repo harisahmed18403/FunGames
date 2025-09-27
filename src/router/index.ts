@@ -9,11 +9,12 @@ export const routes = [
     path: '/',
     name: 'Home',
     component: HomePage,
+    ignore: true,
   },
   // Games
   {
     path: '/tictactoe',
-    name: 'TicTacToe',
+    name: 'Tic Tac Toe',
     component: TicTacToe,
   },
   {
@@ -23,7 +24,7 @@ export const routes = [
   },
   {
     path: '/hangman',
-    name: 'HangMan',
+    name: 'Hang-Man',
     component: HangMan,
   },
 ]
