@@ -4,6 +4,8 @@ import { routes } from '@/router'
 
 import type { RouteRecordNameGeneric } from 'vue-router'
 
+import { hsvToHex, mapRangeFromRangeTo } from '@/utils/generic'
+
 export const useScore = defineStore('score', () => {
   const player1Score = ref(0)
   const player2Score = ref(0)
@@ -25,6 +27,7 @@ interface PlayerStat {
 export const usePlayers = defineStore('players', () => {
   const numPlayers = ref<number>(2)
   const playerStats = ref<PlayerStat[]>([])
+  const playerColors = ref<Array<string>>([])
 
   const playerStatsTotals = computed(() =>
     playerStats.value.map((playerStat: PlayerStat) => {
@@ -70,6 +73,8 @@ export const usePlayers = defineStore('players', () => {
 
         playerStats.value.push(stat)
       }
+
+      playerColors.value = getPlayerColors(newNumPlayers)
     },
     { immediate: true },
   )
@@ -90,5 +95,13 @@ export const usePlayers = defineStore('players', () => {
     }
   }
 
-  return { numPlayers, playerStats, playerStatsTotals, winningPlayer, updateScore }
+  const playerColor = (player: number) => {
+    return playerColors.value[player]
+  }
+
+  return { numPlayers, playerStats, playerStatsTotals, winningPlayer, updateScore, playerColor }
 })
+
+function getPlayerColors(numPlayers: number) {
+  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.5, 0.6))
+}

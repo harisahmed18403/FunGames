@@ -3,7 +3,10 @@
     <RouterLink to="/">Home</RouterLink>
 
     <div class="flex row gap-2 no-wrap scroll-x">
-      <p v-for="(stat, index) in playerStore.playerStatsTotals" class="p1">
+      <p
+        v-for="(stat, index) in playerStore.playerStatsTotals"
+        :style="`color: ${playerStore.playerColor(index)}`"
+      >
         Player {{ index + 1 }} wins: {{ stat.wins }}
       </p>
     </div>

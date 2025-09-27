@@ -2,7 +2,7 @@
   <main class="flex gap-2">
     <div class="flex between center">
       <h2 v-if="message">{{ message }}</h2>
-      <h2 v-else>Player {{ players[currentPlayer] }} turn</h2>
+      <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
     </div>
     <div class="flex gap-1 center">
       <button @click="decrementSize">-</button>
@@ -25,17 +25,13 @@ import { uppercaseLetters } from '@/utils/generic'
 
 // Player setup
 const playersStore = usePlayers()
-let players: string[] = []
-for (let i = 0; i < playersStore.numPlayers; i++) {
-  players.push(uppercaseLetters[i])
-}
 const currentPlayer = ref<number>(0)
 const pauseInput = ref<boolean>(false)
 
 // Board setup
 const minSize = 3
 const size = ref(playersStore.numPlayers + 1)
-const board = reactive<string[][]>([])
+const board = reactive<number[][]>([])
 
 // Win/Tie message
 const message = ref('')
@@ -50,9 +46,9 @@ onMounted(() => {
 function resetBoard() {
   board.length = 0
   for (let r = 0; r < size.value; r++) {
-    const row: string[] = []
+    const row: number[] = []
     for (let c = 0; c < size.value; c++) {
-      row.push('')
+      row.push(-1)
     }
     board.push(row)
   }
@@ -60,8 +56,8 @@ function resetBoard() {
 }
 
 function setCell(col: number, row: number) {
-  if (board[row][col] === '') {
-    board[row][col] = players[currentPlayer.value]
+  if (board[row][col] === -1) {
+    board[row][col] = currentPlayer.value
     if (checkWin()) {
       playersStore.updateScore(currentPlayer.value, router.currentRoute.value.name)
       gameEnd(`Player ${currentPlayer.value} wins!`)
@@ -78,23 +74,23 @@ function setCell(col: number, row: number) {
 function checkWin() {
   // Check rows
   for (let r = 0; r < size.value; r++) {
-    if (board[r].every((cell) => cell === players[currentPlayer.value])) {
+    if (board[r].every((cell) => cell === currentPlayer.value)) {
       return true
     }
   }
 
   // Check columns
   for (let c = 0; c < size.value; c++) {
-    if (board.every((row) => row[c] === players[currentPlayer.value])) {
+    if (board.every((row) => row[c] === currentPlayer.value)) {
       return true
     }
   }
 
   // Check diagonals
-  if (board.every((row, idx) => row[idx] === players[currentPlayer.value])) {
+  if (board.every((row, idx) => row[idx] === currentPlayer.value)) {
     return true
   }
-  if (board.every((row, idx) => row[size.value - 1 - idx] === players[currentPlayer.value])) {
+  if (board.every((row, idx) => row[size.value - 1 - idx] === currentPlayer.value)) {
     return true
   }
 
@@ -102,7 +98,7 @@ function checkWin() {
 }
 
 function checkTie() {
-  return board.flat().every((cell) => cell !== '')
+  return board.flat().every((cell) => cell !== -1)
 }
 
 function gameEnd(msg: string) {

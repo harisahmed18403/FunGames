@@ -3,6 +3,7 @@ import HomePage from '@/views/HomePage.vue'
 import TicTacToe from '@/views/TicTacToe.vue'
 import Connect4 from '@/views/Connect4.vue'
 import HangMan from '@/views/HangMan.vue'
+import PlayerStats from '@/views/PlayerStats.vue'
 
 export const routes = [
   {
@@ -26,6 +27,11 @@ export const routes = [
     path: '/hangman',
     name: 'Hang-Man',
     component: HangMan,
+  },
+  {
+    path: '/playerstats',
+    name: 'Player Stats',
+    component: PlayerStats,
   },
 ]
 

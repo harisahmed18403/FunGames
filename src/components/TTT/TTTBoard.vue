@@ -3,19 +3,25 @@
     <div v-for="(row, rowIndex) in props.board" :key="`row-${rowIndex}`" class="flex">
       <div
         v-for="(cell, colIndex) in row"
+        class="cell"
         :key="`cell-${colIndex}`"
-        :class="`cell ${cellClass(cell)}`"
         @click="cellClicked(colIndex, rowIndex)"
       >
-        {{ cell }}
+        <p v-if="cell > -1" :style="`color: ${playersStore.playerColor(cell)}`">
+          {{ uppercaseLetters[cell] }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { usePlayers } from '@/stores/store'
+import { uppercaseLetters } from '@/utils/generic'
+const playersStore = usePlayers()
+
 const props = defineProps<{
-  board: Array<Array<string>>
+  board: number[][]
   pauseInput: boolean
 }>()
 
@@ -28,14 +34,5 @@ const cellClicked = (col: number, row: number) => {
     return
   }
   emit('cellClicked', col, row)
-}
-const cellClass = (cell: string) => {
-  console.log(cell)
-  if (cell == 'X') {
-    return 'p1'
-  } else if (cell == 'O') {
-    return 'p2'
-  }
-  return ''
 }
 </script>
