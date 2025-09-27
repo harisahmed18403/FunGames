@@ -3,8 +3,13 @@
     <div class="cell-container flex column center">
       <div v-for="(row, rowIndex) in props.board" :key="`row-${rowIndex}`" class="flex">
         <div v-for="(cell, colIndex) in row" :key="`cell-${colIndex}`" class="cell">
-          <div v-if="cell == '1'" class="piece piece-1"></div>
-          <div v-else-if="cell == '2'" class="piece piece-2"></div>
+          <div
+            v-if="cell > -1"
+            class="piece"
+            :style="`background-color: ${playersStore.playerColor(cell)}`"
+          >
+            <p>{{ uppercaseLetters[cell] }}</p>
+          </div>
           <div
             v-else-if="colIndex == hoverCol"
             :class="`piece ${hoverClass(rowIndex, colIndex)}`"
@@ -29,9 +34,13 @@
 </template>
 <style scoped>
 .cell:hover {
-  opacity: 1;
+  background-color: var(--other-color);
 }
 .piece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--other-color);
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
@@ -40,14 +49,6 @@
 .piece.hover-col {
   background-color: var(--b-color);
   opacity: 0.4;
-}
-
-.piece-1 {
-  background-color: var(--p1-color);
-}
-
-.piece-2 {
-  background-color: var(--p2-color);
 }
 
 .cell.controls {
@@ -63,10 +64,15 @@ button {
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import { usePlayers } from '@/stores/store'
+import { uppercaseLetters } from '@/utils/generic'
+
+const playersStore = usePlayers()
+
 const hoverCol = ref<number | null>(null)
 
 const props = defineProps<{
-  board: Array<Array<string>>
+  board: number[][]
 
   pauseInput: boolean
 }>()
@@ -84,8 +90,8 @@ const hoverClass = (row: number, col: number) => {
     return ''
   }
   if (
-    props.board[row][col] == '' &&
-    (row == props.board.length - 1 || props.board[row + 1][col] !== '')
+    props.board[row][col] == -1 &&
+    (row == props.board.length - 1 || props.board[row + 1][col] !== -1)
   ) {
     return 'hover-col'
   }

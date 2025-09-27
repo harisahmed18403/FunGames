@@ -21,8 +21,6 @@ import { useRouter } from 'vue-router'
 import { usePlayers } from '@/stores/store'
 import TTTBoard from '@/components/TTT/TTTBoard.vue'
 
-import { uppercaseLetters } from '@/utils/generic'
-
 // Player setup
 const playersStore = usePlayers()
 const currentPlayer = ref<number>(0)
@@ -60,7 +58,7 @@ function setCell(col: number, row: number) {
     board[row][col] = currentPlayer.value
     if (checkWin()) {
       playersStore.updateScore(currentPlayer.value, router.currentRoute.value.name)
-      gameEnd(`Player ${currentPlayer.value} wins!`)
+      gameEnd(`Player ${currentPlayer.value + 1} wins!`)
       return
     } else if (checkTie()) {
       playersStore.updateScore(null, router.currentRoute.value.name)
