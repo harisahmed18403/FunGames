@@ -4,7 +4,7 @@
       <h2 v-if="message">{{ message }}</h2>
       <h2 v-else>Player {{ players[currentPlayer] }} turn</h2>
     </div>
-    <div class="flex gap-1">
+    <div class="flex gap-1 center">
       <button @click="decrementSize">-</button>
       <span>Size: {{ size }}</span>
       <button @click="incrementSize">+</button>
@@ -16,26 +16,35 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { useScore } from '@/stores/store'
+import { usePlayers } from '@/stores/store'
 import TTTBoard from '@/components/TTT/TTTBoard.vue'
+
+import { uppercaseLetters } from '@/utils/generic'
+
+// Player setup
+const playersStore = usePlayers()
+let players: string[] = []
+for (let i = 0; i < playersStore.numPlayers; i++) {
+  players.push(uppercaseLetters[i])
+}
+const currentPlayer = ref<number>(0)
+const pauseInput = ref<boolean>(false)
 
 // Board setup
 const minSize = 3
-const size = ref(minSize)
+const size = ref(playersStore.numPlayers + 1)
 const board = reactive<string[][]>([])
-
-// Player setup
-const players = ['X', 'O']
-const currentPlayer = ref<number>(0)
-const scoreStore = useScore()
-const pauseInput = ref<boolean>(false)
 
 // Win/Tie message
 const message = ref('')
 
+const router = useRouter()
+
 onMounted(() => {
   resetBoard()
+  console.log(playersStore.playerStats)
 })
 
 function resetBoard() {
@@ -54,15 +63,11 @@ function setCell(col: number, row: number) {
   if (board[row][col] === '') {
     board[row][col] = players[currentPlayer.value]
     if (checkWin()) {
-      if (currentPlayer.value === 0) {
-        scoreStore.player1Score++
-      } else {
-        scoreStore.player2Score++
-      }
+      playersStore.updateScore(currentPlayer.value, router.currentRoute.value.name)
       gameEnd(`Player ${currentPlayer.value} wins!`)
       return
     } else if (checkTie()) {
-      scoreStore.tieScore++
+      playersStore.updateScore(null, router.currentRoute.value.name)
       gameEnd(`Its a Tie!`)
       return
     }
@@ -110,7 +115,7 @@ function gameEnd(msg: string) {
 }
 
 function switchPlayer() {
-  currentPlayer.value = (currentPlayer.value + 1) % players.length
+  currentPlayer.value = (currentPlayer.value + 1) % playersStore.numPlayers
 }
 
 function incrementSize() {

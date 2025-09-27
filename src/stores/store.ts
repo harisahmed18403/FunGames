@@ -1,5 +1,8 @@
-import { ref, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { routes } from '@/router'
+
+import type { RouteRecordNameGeneric } from 'vue-router'
 
 export const useScore = defineStore('score', () => {
   const player1Score = ref(0)
@@ -7,4 +10,85 @@ export const useScore = defineStore('score', () => {
   const tieScore = ref(0)
 
   return { player1Score, player2Score, tieScore }
+})
+
+interface Stat {
+  wins: number
+  losses: number
+  ties: number
+}
+
+interface PlayerStat {
+  [routeName: string]: Stat
+}
+
+export const usePlayers = defineStore('players', () => {
+  const numPlayers = ref<number>(2)
+  const playerStats = ref<PlayerStat[]>([])
+
+  const playerStatsTotals = computed(() =>
+    playerStats.value.map((playerStat: PlayerStat) => {
+      let total: Stat = {
+        wins: 0,
+        losses: 0,
+        ties: 0,
+      }
+
+      for (const key in playerStat) {
+        const stat = playerStat[key]
+        total.wins += stat.wins
+        total.losses += stat.losses
+        total.ties += stat.ties
+      }
+
+      return total
+    }),
+  )
+
+  const winningPlayer = computed(() => {
+    return playerStatsTotals.value.reduce((top: Stat, current: Stat) => {
+      return current.wins > top.wins ? current : top
+    })
+  })
+
+  watch(
+    () => numPlayers.value,
+    (newNumPlayers) => {
+      playerStats.value = []
+      for (let i = 0; i < newNumPlayers; i++) {
+        const stat: PlayerStat = {}
+
+        for (const route of routes) {
+          if (route.name) {
+            stat[String(route.name)] = {
+              wins: 0,
+              losses: 0,
+              ties: 0,
+            }
+          }
+        }
+
+        playerStats.value.push(stat)
+      }
+    },
+    { immediate: true },
+  )
+
+  const updateScore = (winningPlayer: number | null, routeName: RouteRecordNameGeneric) => {
+    if (winningPlayer === null) {
+      playerStats.value.forEach((stat: PlayerStat) => {
+        stat[String(routeName)].ties++
+      })
+    } else {
+      playerStats.value.forEach((stat: PlayerStat, player: number) => {
+        if (player === winningPlayer) {
+          stat[String(routeName)].wins++
+        } else {
+          stat[String(routeName)].losses++
+        }
+      })
+    }
+  }
+
+  return { numPlayers, playerStats, playerStatsTotals, winningPlayer, updateScore }
 })
