@@ -5,7 +5,7 @@
     <div class="flex row gap-2 no-wrap scroll-x">
       <p
         v-for="(stat, index) in playerStore.playerStatsTotals"
-        :style="`color: ${playerStore.playerColor(index)}`"
+        :style="`color: ${playerStore.playerColor(index)}; font-size: small;`"
       >
         Player {{ index + 1 }} wins: {{ stat.wins }}
       </p>

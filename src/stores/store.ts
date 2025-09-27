@@ -4,7 +4,7 @@ import { routes } from '@/router'
 
 import type { RouteRecordNameGeneric } from 'vue-router'
 
-import { hsvToHex, mapRangeFromRangeTo } from '@/utils/generic'
+import { hsvToHex } from '@/utils/generic'
 
 export const useScore = defineStore('score', () => {
   const player1Score = ref(0)
@@ -25,12 +25,60 @@ interface PlayerStat {
 }
 
 export const usePlayers = defineStore('players', () => {
+  const minPlayers = 2
+  const maxPlayers = 10
   const numPlayers = ref<number>(2)
   const playerStats = ref<PlayerStat[]>([])
-  const playerColors = ref<Array<string>>([])
+  const playerColors = getPlayerColors(maxPlayers)
+
+  const addPlayer = () => {
+    if (numPlayers.value < maxPlayers) {
+      numPlayers.value++
+    }
+  }
+
+  const removePlayer = () => {
+    if (numPlayers.value > minPlayers) {
+      numPlayers.value--
+    }
+  }
+
+  watch(
+    () => numPlayers.value,
+    (newNumPlayers) => {
+      setPlayerStats(newNumPlayers)
+    },
+    { immediate: true },
+  )
+
+  function setPlayerStats(numPlayers: number) {
+    let newPlayerStats = []
+    for (let i = 0; i < numPlayers; i++) {
+      // Retain exiting players stats
+      if (playerStats.value[i] !== undefined) {
+        newPlayerStats.push(playerStats.value[i])
+        continue
+      }
+      const stat: PlayerStat = {}
+
+      for (const route of routes) {
+        if (route.name) {
+          stat[String(route.name)] = {
+            wins: 0,
+            losses: 0,
+            ties: 0,
+          }
+        }
+      }
+
+      newPlayerStats.push(stat)
+    }
+
+    playerStats.value = newPlayerStats
+  }
 
   const playerStatsTotals = computed(() =>
-    playerStats.value.map((playerStat: PlayerStat) => {
+    playerStats.value.map((playerStat: PlayerStat, player: number) => {
       let total: Stat = {
         wins: 0,
         losses: 0,
@@ -54,31 +102,6 @@ export const usePlayers = defineStore('players', () => {
     })
   })
 
-  watch(
-    () => numPlayers.value,
-    (newNumPlayers) => {
-      playerStats.value = []
-      for (let i = 0; i < newNumPlayers; i++) {
-        const stat: PlayerStat = {}
-
-        for (const route of routes) {
-          if (route.name) {
-            stat[String(route.name)] = {
-              wins: 0,
-              losses: 0,
-              ties: 0,
-            }
-          }
-        }
-
-        playerStats.value.push(stat)
-      }
-
-      playerColors.value = getPlayerColors(newNumPlayers)
-    },
-    { immediate: true },
-  )
-
   const updateScore = (winningPlayer: number | null, routeName: RouteRecordNameGeneric) => {
     if (winningPlayer === null) {
       playerStats.value.forEach((stat: PlayerStat) => {
@@ -96,12 +119,22 @@ export const usePlayers = defineStore('players', () => {
   }
 
   const playerColor = (player: number) => {
-    return playerColors.value[player]
+    return playerColors[player] ?? 'black'
   }
 
-  return { numPlayers, playerStats, playerStatsTotals, winningPlayer, updateScore, playerColor }
+  return {
+    numPlayers,
+    addPlayer,
+    removePlayer,
+    playerStats,
+    playerStatsTotals,
+    winningPlayer,
+    updateScore,
+    playerColor,
+  }
 })
 
+// Gives a hex color based on teh number of players, is deterministic so the same colors for teh same players come each time
 function getPlayerColors(numPlayers: number) {
-  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.5, 0.6))
+  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.8, 0.6))
 }

@@ -1,9 +1,9 @@
 <template>
   <main>
     <div class="flex center row gap-1">
-      <button @click="playersStore.numPlayers--">-</button>
+      <button @click="playersStore.removePlayer">-</button>
       <h1>{{ playersStore.numPlayers }}</h1>
-      <button @click="playersStore.numPlayers++">+</button>
+      <button @click="playersStore.addPlayer">+</button>
       <h1>Player Games</h1>
     </div>
 
