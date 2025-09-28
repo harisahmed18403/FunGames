@@ -1,15 +1,10 @@
 <template>
   <main>
-    <div class="flex column center gap-3">
-      <h1 v-if="message">{{ message }}</h1>
-      <h1 v-else>Player {{ currentPlayer + 1 }}'s turn</h1>
+    <div class="flex column center gap-3 w-100">
+      <p v-if="message">{{ message }}</p>
+      <p v-else>Player {{ currentPlayer + 1 }}'s turn</p>
 
-      <HMBoard
-        :guess="currentGuess"
-        :tries-left-p1="triesLeft[0]"
-        :tries-left-p2="triesLeft[1]"
-        :max-tries="maxTries"
-      />
+      <HMBoard :guess="currentGuess" :tries-left="triesLeft" :max-tries="maxTries" />
 
       <div class="letters">
         <button
@@ -35,14 +30,14 @@
 }
 .letter {
   font-size: large;
-  text-transform: capitalize;
-  background-color: var(--other-color);
+  text-transform: uppercase;
+  background-color: var(--primary-color);
 }
 </style>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { useScore } from '@/stores/store'
+import { useScore, usePlayers } from '@/stores/store'
 import { getRandomWord } from '@/utils/api'
 import { randomInteger, lowercaseLetters } from '@/utils/generic'
 
@@ -54,23 +49,24 @@ const wordLength = ref<{ minLen: number; maxLen: number }>({
   maxLen: 7,
 })
 const maxTries = ref<number>(10)
-const triesLeft = ref<number[]>([maxTries.value, maxTries.value])
+const triesLeft = ref<number[]>([])
 const currentWord = ref<string[]>([])
 const currentGuess = ref<string[]>([])
 const attemptedLetters = ref<Record<string, boolean>>({})
 const message = ref<string>('')
 
 // Player setup
-const players = ['1', '2']
+const playersStore = usePlayers()
 const currentPlayer = ref<number>(0)
 const scoreStore = useScore()
 
 onMounted(() => {
+  setTries()
   setRandomWord()
 })
 
 function setTries() {
-  triesLeft.value = [maxTries.value, maxTries.value]
+  triesLeft.value = [...Array(playersStore.numPlayers)].map((_, i) => maxTries.value)
 }
 
 async function setRandomWord() {
@@ -150,6 +146,10 @@ function displayMessage(msg: string) {
 }
 
 function switchPlayer() {
-  currentPlayer.value = (currentPlayer.value + 1) % players.length
+  currentPlayer.value = (currentPlayer.value + 1) % playersStore.numPlayers
+  // If player has no attempts left switch to the other
+  while (triesLeft.value[currentPlayer.value] <= 0) {
+    currentPlayer.value = (currentPlayer.value + 1) % playersStore.numPlayers
+  }
 }
 </script>
