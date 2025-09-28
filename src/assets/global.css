@@ -2,17 +2,18 @@
 
 :root {
   font-family: 'Roboto Mono', monospace;
-  --p1-color: #535b71;
-  --p2-color: #be3144;
-  --other-color: #d3d6db;
+  --primary-color: #edf2f4;
+  --secondary-color: #8d99ae;
+  --tertiary-color: #2b2d42;
+  --quaternary-color: #ef233c;
+  --quinary-color: #d90429;
   --b-radius: 4px;
-  --b-color: #303841;
 }
 
 body {
   margin: 0;
-  background-color: var(--b-color);
-  color: var(--other-color);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 main {
@@ -21,7 +22,6 @@ main {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  padding: 0%;
   overflow: hidden;
 }
 
@@ -29,9 +29,9 @@ h1,
 h2,
 h3,
 h4 {
-  color: var(--other-color);
+  color: var(--tertiary-color);
   text-transform: uppercase;
-  text-shadow: -1px 1px 1px var(--b-color);
+  text-shadow: -1px 1px 1px var(--secondary-color);
 }
 
 h1 {
@@ -48,14 +48,6 @@ h3 {
 
 h4 {
   font-size: 0.5rem;
-}
-
-.p1 {
-  color: var(--p1-color) !important;
-}
-
-.p2 {
-  color: var(--p2-color) !important;
 }
 
 .pad-1 {
@@ -84,6 +76,10 @@ h4 {
 
 .flex {
   display: flex;
+}
+
+.flex.w-100 {
+  width: 100%;
 }
 
 .flex.row {
@@ -155,20 +151,22 @@ h4 {
 
 button,
 a {
-  background-color: var(--other-color);
-  color: var(--b-color);
-  border: thin solid var(--b-color);
+  background-color: var(--primary-color);
+  color: var(--tertiary-color);
+  border: 0.1rem solid var(--tertiary-color);
   border-radius: var(--b-radius);
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 0.5rem 2rem;
+  font-weight: bold;
   text-decoration: none;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.1s ease;
 }
 
 button:hover,
 a:hover {
-  opacity: 0.8;
+  background-color: var(--tertiary-color);
+  color: var(--quaternary-color);
 }
 
 button:focus,
@@ -190,7 +188,7 @@ button:disabled:hover a:disabled:hover {
 
 .route {
   text-decoration: none;
-  color: var(--b-color);
+  color: var(--secondary-color);
 }
 
 .route:hover {
@@ -198,16 +196,16 @@ button:disabled:hover a:disabled:hover {
 }
 
 .cell-container {
-  border: 1px solid var(--other-color);
+  border: 0.1rem solid var(--tertiary-color);
   padding: 1rem;
 }
 
 .cell {
   width: 4rem;
   height: 4rem;
-  background-color: var(--other-color);
-  border: thin solid var(--b-color);
-  color: var(--b-color);
+  background-color: var(--primary-color);
+  border: thin solid var(--secondary-color);
+  color: var(--secondary-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;

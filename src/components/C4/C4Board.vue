@@ -34,25 +34,25 @@
 </template>
 <style scoped>
 .cell:hover {
-  background-color: var(--other-color);
+  background-color: var(--primary-color);
 }
 .piece {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--other-color);
+  color: var(--primary-color);
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
 }
 
 .piece.hover-col {
-  background-color: var(--b-color);
+  background-color: var(--secondary-color);
   opacity: 0.4;
 }
 
 .cell.controls {
-  background-color: var(--b-color);
+  background-color: var(--secondary-color);
 }
 
 button {

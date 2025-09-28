@@ -35,13 +35,13 @@
 #overView th,
 #overView td {
   padding: 1rem;
-  border: thin solid var(--other-color);
+  border: thin solid var(--primary-color);
 }
 
 #overView td {
-  background-color: var(--other-color);
-  border: thin solid var(--b-color);
-  color: var(--b-color);
+  background-color: var(--primary-color);
+  border: thin solid var(--secondary-color);
+  color: var(--secondary-color);
 }
 
 #overView tr:last-of-type td:first-child {

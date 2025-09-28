@@ -15,8 +15,8 @@
 <style scoped>
 .head {
   justify-content: space-around;
-  background-color: var(--other-color);
-  color: var(--b-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
   height: 4rem;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
