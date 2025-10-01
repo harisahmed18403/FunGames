@@ -1,11 +1,13 @@
 <template>
-  <main class="flex gap-2">
-    <div class="flex">
-      <h2 v-if="message">{{ message }}</h2>
-      <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
+  <main>
+    <div>
+      <div class="flex center column">
+        <h2 v-if="message">{{ message }}</h2>
+        <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
+        <C4Board :board="board" :pause-input="pauseInput" @column-clicked="addPiece" />
+        <button @click="resetBoard">Reset Board</button>
+      </div>
     </div>
-    <C4Board :board="board" :pause-input="pauseInput" @column-clicked="addPiece" />
-    <button @click="resetBoard">Reset Board</button>
   </main>
 </template>
 <script setup lang="ts">

@@ -29,9 +29,7 @@
   justify-content: center;
 }
 .letter {
-  font-size: large;
   text-transform: uppercase;
-  background-color: var(--primary-color);
 }
 </style>
 <script setup lang="ts">
@@ -72,6 +70,7 @@ function setTries() {
 async function setRandomWord() {
   const length = randomInteger(wordLength.value.minLen, wordLength.value.maxLen)
   const response = await getRandomWord(length)
+  console.log(response)
   if (response && response.data) {
     currentWord.value = []
     currentGuess.value = []

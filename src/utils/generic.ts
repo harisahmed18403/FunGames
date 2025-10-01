@@ -4,7 +4,7 @@ export const randomInteger = (min: number = 0, max: number = 100) => {
 
 export const lowercaseLetters = [...Array(26)].map((_, i) => String.fromCharCode(97 + i))
 
-export const uppercaseLetters = [...Array(13)].map((_, i) => String.fromCharCode(90 - 2 * i))
+// export const playerSymbols = [...Array(13)].map((_, i) => String.fromCharCode(90 - 2 * i))
 
 export function mapRangeFromRangeTo(val1: number, max1: number, val2: number) {
   return Math.floor((1 - val1 / max1) * val2)
@@ -50,3 +50,35 @@ function componentToHex(c: number) {
   var hex = Math.floor(c).toString(16)
   return hex.length == 1 ? '0' + hex : hex
 }
+
+export const playerSymbols = [
+  '◆',
+  '■',
+  '●',
+  '▲',
+  '✖',
+  '⬟',
+  '☀',
+  '☁',
+  '☂',
+  '☉',
+  '☯',
+  '✿',
+  '✚',
+  '♠',
+  '♣',
+  '♥',
+  '♦',
+  '✦',
+  '⚑',
+  '⚙',
+  '⬢',
+  '⬤',
+  '⬧',
+  '▣',
+  '▤',
+  '▥',
+  '◈',
+  '◍',
+  '⧫',
+]

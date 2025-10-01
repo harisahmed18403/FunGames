@@ -8,7 +8,7 @@
         @click="cellClicked(colIndex, rowIndex)"
       >
         <p v-if="cell > -1" :style="`color: ${playersStore.playerColor(cell)}`">
-          {{ uppercaseLetters[cell] }}
+          {{ playerSymbols[cell] }}
         </p>
       </div>
     </div>
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { usePlayers } from '@/stores/store'
-import { uppercaseLetters } from '@/utils/generic'
+import { playerSymbols } from '@/utils/generic'
 const playersStore = usePlayers()
 
 const props = defineProps<{

@@ -2,7 +2,7 @@
 
 :root {
   font-family: 'Roboto Mono', monospace;
-  --primary-color: #edf2f4;
+  --primary-color: #e0e5e7;
   --secondary-color: #8d99ae;
   --tertiary-color: #2b2d42;
   --quaternary-color: #ef233c;
@@ -14,15 +14,24 @@ body {
   margin: 0;
   background-color: var(--secondary-color);
   color: var(--primary-color);
+  height: 100vh;
+}
+
+#app {
+  height: 100%;
+  overflow: hidden;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+  padding: 0%;
+  margin: 0;
+  margin-top: 2rem;
 }
 
 h1,
@@ -32,6 +41,7 @@ h4 {
   color: var(--tertiary-color);
   text-transform: uppercase;
   text-shadow: -1px 1px 1px var(--secondary-color);
+  margin: 0%;
 }
 
 h1 {
@@ -50,27 +60,37 @@ h4 {
   font-size: 0.5rem;
 }
 
-.pad-1 {
+h1,
+h2,
+h3,
+h4,
+p,
+span {
+  margin: 0;
+  padding: 0;
+}
+
+.flex.pad-1 {
   padding: 1rem;
 }
 
-.pad-2 {
+.flex.pad-2 {
   padding: 2rem;
 }
 
-.pad-3 {
+.flex.pad-3 {
   padding: 3rem;
 }
 
-.pad-x-1 {
+.flex.pad-x-1 {
   padding: 0 1rem 0 1rem;
 }
 
-.pad-x-2 {
+.flex.pad-x-2 {
   padding: 0 2rem 0 2rem;
 }
 
-.pad-x-3 {
+.flex.pad-x-3 {
   padding: 0 3rem 0 3rem;
 }
 
@@ -80,6 +100,11 @@ h4 {
 
 .flex.w-100 {
   width: 100%;
+}
+
+.flex.h-100 {
+  height: 100%;
+  align-items: center;
 }
 
 .flex.row {
@@ -156,17 +181,20 @@ a {
   border: 0.1rem solid var(--tertiary-color);
   border-radius: var(--b-radius);
   padding: 0.5rem 2rem;
+  min-width: 5rem;
   font-weight: bold;
   text-decoration: none;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.1s ease;
+  box-shadow: 0 0.1rem 0 var(--tertiary-color);
 }
 
 button:hover,
 a:hover {
   background-color: var(--tertiary-color);
   color: var(--quaternary-color);
+  box-shadow: 0 0.1rem 0 var(--quaternary-color);
 }
 
 button:focus,
@@ -197,14 +225,21 @@ button:disabled:hover a:disabled:hover {
 
 .cell-container {
   border: 0.1rem solid var(--tertiary-color);
+  border-radius: var(--b-radius);
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  box-shadow: -0.1rem 0.1rem var(--tertiary-color);
 }
 
 .cell {
   width: 4rem;
   height: 4rem;
   background-color: var(--primary-color);
-  border: thin solid var(--secondary-color);
+  border: thin solid var(--tertiary-color);
   color: var(--secondary-color);
   display: inline-flex;
   align-items: center;
@@ -215,7 +250,7 @@ button:disabled:hover a:disabled:hover {
 }
 
 .cell:hover {
-  background-color: white;
+  background-color: var(--tertiary-color);
 }
 
 .cell p {

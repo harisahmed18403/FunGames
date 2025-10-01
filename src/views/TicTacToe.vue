@@ -1,25 +1,42 @@
 <template>
-  <main class="flex gap-2">
-    <div class="flex between center">
-      <h2 v-if="message">{{ message }}</h2>
-      <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
+  <main>
+    <div class="grid">
+      <div class="flex column center w-100 h-100">
+        <h2 v-if="message">{{ message }}</h2>
+        <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
+      </div>
+      <div class="flex column center w-100 h-100">
+        <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
+      </div>
+      <div class="flex column center w-100 h-100 gap-1">
+        <div class="flex gap-1">
+          <button @click="decrementSize">-</button>
+          <span>Size: {{ size }}</span>
+          <button @click="incrementSize">+</button>
+        </div>
+        <button @click="openModal">Reset</button>
+      </div>
     </div>
-    <div class="flex gap-1 center">
-      <button @click="decrementSize">-</button>
-      <span>Size: {{ size }}</span>
-      <button @click="incrementSize">+</button>
-    </div>
-    <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
-    <button @click="resetBoard">Reset</button>
+    <ResetModal :modalVisible="modalVisible" @close="closeModal" @submit="submitModal" />
   </main>
 </template>
-
+<style scoped>
+.grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  text-align: center;
+}
+</style>
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { usePlayers } from '@/stores/store'
 import TTTBoard from '@/components/TTT/TTTBoard.vue'
+import ResetModal from '@/components/ResetModal.vue'
 
 // Player setup
 const playersStore = usePlayers()
@@ -27,20 +44,32 @@ const currentPlayer = ref<number>(0)
 const pauseInput = ref<boolean>(false)
 
 // Board setup
-const minSize = 3
 const size = ref(playersStore.numPlayers + 1)
 const board = reactive<number[][]>([])
 
 // Win/Tie message
 const message = ref('')
 
+const modalVisible = ref<boolean>(false)
+
 const router = useRouter()
 
 onMounted(() => {
   resetBoard()
-  console.log(playersStore.playerStats)
 })
 
+function openModal() {
+  modalVisible.value = true
+}
+
+function closeModal() {
+  modalVisible.value = false
+}
+
+function submitModal() {
+  resetBoard()
+  modalVisible.value = false
+}
 function resetBoard() {
   board.length = 0
   for (let r = 0; r < size.value; r++) {
@@ -113,12 +142,14 @@ function switchPlayer() {
 }
 
 function incrementSize() {
-  size.value++
-  resetBoard()
+  if (size.value < playersStore.maxPlayers + 1) {
+    size.value++
+    resetBoard()
+  }
 }
 
 function decrementSize() {
-  if (size.value > minSize) {
+  if (size.value > 3) {
     size.value--
     resetBoard()
   }

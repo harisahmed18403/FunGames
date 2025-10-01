@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="flex gap-2">
-      <template v-if="props.guess.length == 0">
+      <template v-if="guess.length == 0">
         <div class="letter">
           <h2>Loading</h2>
         </div>
@@ -61,7 +61,7 @@
 </style>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { usePlayers } from '@/stores/store'
 
 const playersStore = usePlayers()
@@ -90,9 +90,7 @@ const hmanStages = computed(() => {
 
 // Return the 'stage' at which the hman is at
 function getHmanStage(triesLeft: number) {
-  let percent = triesLeft / props.maxTries
   let hmanStage = hman.length - Math.floor((triesLeft * hman.length) / props.maxTries)
-  console.log(triesLeft, percent, hman.length, hmanStage)
   return hmanStage
 }
 </script>

@@ -8,7 +8,7 @@
             class="piece"
             :style="`background-color: ${playersStore.playerColor(cell)}`"
           >
-            <p>{{ uppercaseLetters[cell] }}</p>
+            <p>{{ playerSymbols[cell] }}</p>
           </div>
           <div
             v-else-if="colIndex == hoverCol"
@@ -56,8 +56,11 @@
 }
 
 button {
+  min-width: 4rem;
   width: 4rem;
   height: 4rem;
+  padding: 0;
+
   font-weight: bold;
 }
 </style>
@@ -65,7 +68,7 @@ button {
 import { computed, ref } from 'vue'
 
 import { usePlayers } from '@/stores/store'
-import { uppercaseLetters } from '@/utils/generic'
+import { playerSymbols } from '@/utils/generic'
 
 const playersStore = usePlayers()
 

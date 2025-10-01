@@ -14,20 +14,20 @@ export const useScore = defineStore('score', () => {
   return { player1Score, player2Score, tieScore }
 })
 
-interface Stat {
+export interface Stat {
   wins: number
   losses: number
   ties: number
 }
 
-interface PlayerStat {
+export interface PlayerStat {
   [routeName: string]: Stat
 }
 
 export const usePlayers = defineStore('players', () => {
   const minPlayers = 2
-  const maxPlayers = 10
-  const numPlayers = ref<number>(2)
+  const maxPlayers = 9
+  const numPlayers = ref<number>(3)
   const playerStats = ref<PlayerStat[]>([])
   const playerColors = getPlayerColors(maxPlayers)
 
@@ -53,25 +53,26 @@ export const usePlayers = defineStore('players', () => {
 
   function setPlayerStats(numPlayers: number) {
     let newPlayerStats = []
+    // Game stats
     for (let i = 0; i < numPlayers; i++) {
-      // Retain exiting players stats
+      // Retain exiting players info
+
       if (playerStats.value[i] !== undefined) {
         newPlayerStats.push(playerStats.value[i])
-        continue
-      }
-      const stat: PlayerStat = {}
+      } else {
+        const stat: PlayerStat = {}
 
-      for (const route of routes) {
-        if (route.name) {
-          stat[String(route.name)] = {
-            wins: 0,
-            losses: 0,
-            ties: 0,
+        for (const route of routes) {
+          if (route.name) {
+            stat[String(route.name)] = {
+              wins: 0,
+              losses: 0,
+              ties: 0,
+            }
           }
         }
+        newPlayerStats.push(stat)
       }
-
-      newPlayerStats.push(stat)
     }
 
     playerStats.value = newPlayerStats
@@ -124,6 +125,8 @@ export const usePlayers = defineStore('players', () => {
 
   return {
     numPlayers,
+    minPlayers,
+    maxPlayers,
     addPlayer,
     removePlayer,
     playerStats,
@@ -136,5 +139,5 @@ export const usePlayers = defineStore('players', () => {
 
 // Gives a hex color based on teh number of players, is deterministic so the same colors for teh same players come each time
 function getPlayerColors(numPlayers: number) {
-  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.8, 0.6))
+  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.6, 0.8))
 }

@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="">
-      <table id="overView">
+    <div class="table-wrapper">
+      <table id="overview">
         <thead>
           <tr>
             <th>Rank</th>
@@ -14,7 +14,12 @@
         <tbody>
           <tr v-for="(stat, index) in sortedStats" :key="stat.id">
             <td>#{{ index + 1 }}</td>
-            <td :style="`color: ${playerStore.playerColor(stat.id)}`">{{ stat.id + 1 }}</td>
+            <td
+              class="player-cell"
+              :style="`background-color: ${playerStore.playerColor(stat.id)}`"
+            >
+              {{ stat.id + 1 }}
+            </td>
             <td>{{ stat.wins }}</td>
             <td>{{ stat.losses }}</td>
             <td>{{ stat.ties }}</td>
@@ -24,34 +29,51 @@
     </div>
   </main>
 </template>
+
 <style scoped>
-#overView {
-  table-layout: fixed;
+.table-wrapper {
+  padding: 2rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+#overview {
+  width: 100%;
   border-collapse: collapse;
+  font-size: 1.6rem;
   text-align: center;
-  font-size: 2rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: var(--background-color);
 }
 
-#overView th,
-#overView td {
-  padding: 1rem;
-  border: thin solid var(--primary-color);
-}
-
-#overView td {
+#overview th {
   background-color: var(--primary-color);
-  border: thin solid var(--secondary-color);
-  color: var(--secondary-color);
+  color: var(--tertiary-color);
+  padding: 1.2rem;
+  font-weight: bold;
+  border-bottom: 2px solid var(--tertiary-color);
 }
 
-#overView tr:last-of-type td:first-child {
-  border-bottom-left-radius: 1rem;
+#overview td {
+  padding: 1.2rem;
+  background-color: var(--primary-color);
+  border-bottom: 1px solid var(--tertiary-color);
+  color: var(--tertiary-color);
 }
 
-#overView tr:last-of-type td:last-child {
-  border-bottom-right-radius: 1rem;
+#overview tr:last-child td {
+  border-bottom: none;
+}
+
+.player-cell {
+  color: var(--primary-color);
+  font-weight: bold;
+  border-radius: 0.4rem;
 }
 </style>
+
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { usePlayers } from '@/stores/store'
