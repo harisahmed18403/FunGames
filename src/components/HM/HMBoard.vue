@@ -159,8 +159,6 @@ const getItemStyle = (player: number) => {
 }
 
 const getHmanCellStyle = (i: number, player: number) => {
-  return {
-    visibility: i <= hmanStages.value[player] ? 'visible' : 'hidden',
-  }
+  return i <= hmanStages.value[player] ? 'visibility: visible;' : 'visibility: hidden;'
 }
 </script>
