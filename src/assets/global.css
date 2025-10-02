@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+/* @import url('./body.css'); */
 
 :root {
   font-family: 'Roboto Mono', monospace;
-  --primary-color: #e0e5e7;
-  --secondary-color: #8d99ae;
+  --primary-color: #f8fdff;
+  --secondary-color: #aab3c4;
   --tertiary-color: #2b2d42;
   --quaternary-color: #ef233c;
   --quinary-color: #d90429;
@@ -40,8 +41,6 @@ h3,
 h4 {
   color: var(--tertiary-color);
   text-transform: uppercase;
-  text-shadow: -1px 1px 1px var(--secondary-color);
-  margin: 0%;
 }
 
 h1 {
@@ -226,6 +225,7 @@ button:disabled:hover a:disabled:hover {
 .cell-container {
   border: 0.1rem solid var(--tertiary-color);
   border-radius: var(--b-radius);
+  background-color: var(--secondary-color);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -244,7 +244,7 @@ button:disabled:hover a:disabled:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 3rem;
   padding: 0%;
   border-collapse: collapse;
 }

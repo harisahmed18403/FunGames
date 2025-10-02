@@ -1,23 +1,26 @@
 <template>
-  <div class="flex column center gap-3 w-100">
-    <div class="flex row between first-baseline gap-1 scroll-x w-100">
-      <div
-        v-for="(tries, player) in triesLeft"
-        class="hangman"
-        :style="`color: ${playersStore.playerColor(player)}`"
-      >
-        <p>{{ player + 1 }}: {{ tries }} attempts</p>
-        <div class="flex row" v-for="i in hman.length" :key="i">
-          <span
-            v-for="j in hman[0].length"
-            :key="j"
-            :style="`visibility: ${i <= hmanStages[player] ? 'visible' : 'hidden'}`"
-            >{{ hman[i - 1][j - 1] }}</span
-          >
+  <div class="flex center column">
+    <div class="container" :style="getContainerStyle()">
+      <div class="carousel" :style="getCarouselStyle(currentPlayer)">
+        <div class="item" v-for="(tries, player) in triesLeft" :style="getItemStyle(player)">
+          <p>
+            <span :style="`color: ${playersStore.playerColor(player)}`">{{
+              playerSymbols[player]
+            }}</span>
+            {{ tries }} attempts
+          </p>
+          <div class="hangman">
+            <div class="inner" v-for="i in hman.length" :key="i">
+              <span v-for="j in hman[0].length" :key="j" :style="getHmanCellStyle(i, player)">
+                {{ hman[i - 1][j - 1] }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="flex gap-2">
+
+    <div class="flex gap-2 mt-3">
       <template v-if="guess.length == 0">
         <div class="letter">
           <h2>Loading</h2>
@@ -32,37 +35,68 @@
   </div>
 </template>
 <style scoped>
+:root {
+  --carousel-height: 5rem;
+}
 .letter {
   font-size: large;
   border-bottom: thin solid black;
   text-transform: uppercase;
 }
 
+.container {
+  margin: 0 auto;
+  position: relative;
+  perspective: 1000px;
+}
+
+.carousel {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.item {
+  display: block;
+  position: absolute;
+  background: var(--primary-color);
+  border: 0.1rem solid var(--tertiary-color);
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0rem 0.1rem 1px black;
+}
+
+.item p {
+  color: var(--tertiary-color);
+}
+
 .hangman {
   display: flex;
   flex-direction: column;
-  border: thin solid var(--primary-color);
-  padding: 1rem;
-  width: 10rem;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+  gap: 0.6ch;
 }
 
-.hangman.active {
-  background-color: white;
+.inner {
+  display: flex;
 }
 
 .hangman span {
-  font-size: large;
   padding: 0%;
   margin: 0;
   width: 1ch;
-  height: 2ch;
-  font-weight: 900;
+  height: 1ch;
 }
 </style>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { usePlayers } from '@/stores/store'
+import { playerSymbols } from '@/utils/generic'
 
 const playersStore = usePlayers()
 
@@ -70,6 +104,7 @@ const props = defineProps<{
   guess: string[]
   triesLeft: number[]
   maxTries: number
+  currentPlayer: number
 }>()
 
 // Char array representing hang man
@@ -92,5 +127,40 @@ const hmanStages = computed(() => {
 function getHmanStage(triesLeft: number) {
   let hmanStage = hman.length - Math.floor((triesLeft * hman.length) / props.maxTries)
   return hmanStage
+}
+
+const getContainerStyle = () => {
+  const widthRem = Math.max(playersStore.numPlayers + 2, 10)
+  return {
+    width: `${widthRem}rem`,
+    height: '150px',
+  }
+}
+
+const getCarouselStyle = (currentPlayer: number) => {
+  const rotation = currentPlayer * (-360 / playersStore.numPlayers)
+  return {
+    transform: `rotateY(${rotation}deg)`,
+    WebkitTransform: `rotateY(${rotation}deg)`,
+    MozTransform: `rotateY(${rotation}deg)`,
+    OTransform: `rotateY(${rotation}deg)`,
+  }
+}
+
+const getItemStyle = (player: number) => {
+  const widthRem = Math.max(playersStore.numPlayers + 2, 10)
+  const rotation = (360 / playersStore.numPlayers) * player
+  return {
+    width: `${widthRem}rem`,
+    height: '150px',
+    color: playersStore.playerColor(player),
+    transform: `rotateY(${rotation}deg) translateZ(250px)`,
+  }
+}
+
+const getHmanCellStyle = (i: number, player: number) => {
+  return {
+    visibility: i <= hmanStages.value[player] ? 'visible' : 'hidden',
+  }
 }
 </script>

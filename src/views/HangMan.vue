@@ -1,10 +1,15 @@
 <template>
   <main>
     <div class="flex column center gap-3 w-100">
-      <p v-if="message">{{ message }}</p>
-      <p v-else>Player {{ currentPlayer + 1 }}'s turn</p>
+      <h2 v-if="message">{{ message }}</h2>
+      <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
 
-      <HMBoard :guess="currentGuess" :tries-left="triesLeft" :max-tries="maxTries" />
+      <HMBoard
+        :guess="currentGuess"
+        :tries-left="triesLeft"
+        :max-tries="maxTries"
+        :current-player="currentPlayer"
+      />
 
       <div class="letters">
         <button

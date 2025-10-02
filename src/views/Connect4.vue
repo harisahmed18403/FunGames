@@ -2,8 +2,7 @@
   <main>
     <div>
       <div class="flex center column">
-        <h2 v-if="message">{{ message }}</h2>
-        <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
+        <CurrentPlayer :current-player="currentPlayer" :message="message" />
         <C4Board :board="board" :pause-input="pauseInput" @column-clicked="addPiece" />
         <button @click="resetBoard">Reset Board</button>
       </div>
@@ -15,6 +14,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePlayers } from '@/stores/store'
 import C4Board from '@/components/C4/C4Board.vue'
+import CurrentPlayer from '@/components/CurrentPlayer.vue'
 
 // Board setup
 const minRows = 6

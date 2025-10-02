@@ -1,11 +1,9 @@
 <template>
   <main>
     <div class="grid">
+      <div class="flex column center w-100 h-100"></div>
       <div class="flex column center w-100 h-100">
-        <h2 v-if="message">{{ message }}</h2>
-        <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
-      </div>
-      <div class="flex column center w-100 h-100">
+        <CurrentPlayer :current-player="currentPlayer" :message="message" />
         <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
       </div>
       <div class="flex column center w-100 h-100 gap-1">
@@ -35,6 +33,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { usePlayers } from '@/stores/store'
+import CurrentPlayer from '@/components/CurrentPlayer.vue'
 import TTTBoard from '@/components/TTT/TTTBoard.vue'
 import ResetModal from '@/components/ResetModal.vue'
 

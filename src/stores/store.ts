@@ -139,5 +139,5 @@ export const usePlayers = defineStore('players', () => {
 
 // Gives a hex color based on teh number of players, is deterministic so the same colors for teh same players come each time
 function getPlayerColors(numPlayers: number) {
-  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.6, 0.8))
+  return [...Array(numPlayers)].map((_, i) => hsvToHex((i * 360) / numPlayers, 0.5, 0.9))
 }

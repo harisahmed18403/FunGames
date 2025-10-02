@@ -18,7 +18,7 @@
   justify-content: space-around;
   background-color: var(--primary-color);
   color: var(--primary-color);
-  height: 4rem;
+  height: 3rem;
   border: 0.1rem solid var(--tertiary-color);
   border-top: none;
   border-bottom-left-radius: 1rem;
