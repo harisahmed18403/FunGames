@@ -63,7 +63,7 @@ export const usePlayers = defineStore('players', () => {
         const stat: PlayerStat = {}
 
         for (const route of routes) {
-          if (route.name) {
+          if (route.name && !route.ignore) {
             stat[String(route.name)] = {
               wins: 0,
               losses: 0,

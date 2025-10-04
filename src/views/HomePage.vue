@@ -20,9 +20,10 @@
         <h2>Player Games</h2>
       </div>
       <div class="flex center column row gap-1 h-100">
-        <template v-for="route in routes">
-          <RouterLink v-if="route.ignore !== true" :to="route.path">{{ route.name }}</RouterLink>
-        </template>
+        <RouterLink to="/tictactoe">Tic Tac Toe</RouterLink>
+        <RouterLink to="/connect4">Connect4</RouterLink>
+        <RouterLink to="/hangman">Hang-Man</RouterLink>
+        <RouterLink to="/playerstats">Player Stats</RouterLink>
       </div>
     </div>
   </main>

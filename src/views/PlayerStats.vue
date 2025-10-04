@@ -4,42 +4,114 @@
       <table id="overview">
         <thead>
           <tr>
-            <th>Rank</th>
             <th>Player</th>
+            <th>Game</th>
             <th>Wins</th>
             <th>Losses</th>
             <th>Ties</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(stat, index) in sortedStats" :key="stat.id">
-            <td>#{{ index + 1 }}</td>
-            <td
-              class="player-cell"
-              :style="`background-color: ${playerStore.playerColor(stat.id)}`"
-            >
-              {{ stat.id + 1 }}
-            </td>
-            <td>{{ stat.wins }}</td>
-            <td>{{ stat.losses }}</td>
-            <td>{{ stat.ties }}</td>
-          </tr>
+          <template v-for="(player, index) in sortedStats" :key="player.id">
+            <tr>
+              <td
+                rowspan="1 + Object.keys(player.playerStats).length"
+                class="player-cell"
+                :style="`background-color: ${playerStore.playerColor(player.id)}`"
+              >
+                Player {{ player.id + 1 }}
+              </td>
+              <td>Total</td>
+              <td>{{ player.total.wins }}</td>
+              <td>{{ player.total.losses }}</td>
+              <td>{{ player.total.ties }}</td>
+            </tr>
+
+            <tr v-for="(gameStats, gameName) in player.playerStats" :key="gameName">
+              <td></td>
+              <td>{{ gameName }}</td>
+              <td>{{ gameStats.wins }}</td>
+              <td>{{ gameStats.losses }}</td>
+              <td>{{ gameStats.ties }}</td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
   </main>
 </template>
+<style scoped>
+.table-wrapper {
+  height: 100%;
+  width: 100%;
+  overflow-x: auto;
+}
 
-<style scoped></style>
+#overview {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family, 'Roboto Mono', monospace);
+  text-align: center;
+}
+
+#overview th,
+#overview td {
+  padding: var(--s011);
+  border: var(--s01) solid var(--tertiary-color);
+}
+
+#overview th {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+}
+
+#overview td {
+  font-size: var(--font-size-small);
+  color: var(--tertiary-color);
+}
+
+.player-cell {
+  font-weight: bold;
+  color: var(--primary-color);
+  border-radius: var(--b-radius);
+}
+
+#overview tr:nth-child(even) {
+  background-color: var(--primary-color);
+}
+
+#overview tr:nth-child(odd) {
+  background-color: var(--secondary-color);
+}
+</style>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { usePlayers } from '@/stores/store'
+
 const playerStore = usePlayers()
 
 const sortedStats = computed(() => {
-  return Object.entries(playerStore.playerStatsTotals)
-    .map(([id, stats]) => ({ id: Number(id), ...stats }))
-    .sort((a, b) => b.wins - a.wins) // descending by wins
+  return Object.entries(playerStore.playerStats)
+    .map(([id, stats]) => {
+      const playerStats = stats // object with per-game stats
+      const total = Object.values(stats).reduce(
+        (acc, s) => ({
+          wins: acc.wins + s.wins,
+          losses: acc.losses + s.losses,
+          ties: acc.ties + s.ties,
+        }),
+        { wins: 0, losses: 0, ties: 0 },
+      )
+
+      return {
+        id: Number(id),
+        playerStats,
+        total,
+      }
+    })
+    .sort((a, b) => b.total.wins - a.total.wins)
 })
 </script>

@@ -32,6 +32,7 @@ export const routes = [
     path: '/playerstats',
     name: 'Player Stats',
     component: PlayerStats,
+    ignore: true,
   },
 ]
 
