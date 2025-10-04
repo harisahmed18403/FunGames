@@ -1,6 +1,6 @@
 <template>
   <div class="flex center head pad-x-1 between">
-    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/" class="small">Home</RouterLink>
 
     <div class="flex row gap-2 no-wrap scroll-x">
       <p
@@ -15,19 +15,20 @@
 </template>
 <style scoped>
 .head {
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: var(--s05);
   background-color: var(--primary-color);
   color: var(--primary-color);
-  height: 3rem;
-  border: 0.1rem solid var(--tertiary-color);
+  height: var(--s2);
+  border: var(--s01) solid var(--tertiary-color);
   border-top: none;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  box-shadow: 0 0.1rem black;
+  border-bottom-left-radius: var(--s05);
+  border-bottom-right-radius: var(--s05);
+  box-shadow: 0 var(--s01) black;
 }
 
 .playerStat {
-  font-size: small;
+  font-size: var(--font-size-small);
   background-color: var(--primary-color);
 }
 </style>

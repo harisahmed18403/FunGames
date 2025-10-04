@@ -32,7 +32,7 @@
 
 <style scoped>
 .table-wrapper {
-  padding: 2rem;
+  padding: var(--s2);
   overflow-x: auto;
   max-width: 100%;
 }
@@ -40,10 +40,10 @@
 #overview {
   width: 100%;
   border-collapse: collapse;
-  font-size: 1.6rem;
+  font-size: var(--font-size-heading);
   text-align: center;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-  border-radius: 1rem;
+  box-shadow: 0 0 var(--s05) rgba(0, 0, 0, 0.1);
+  border-radius: var(--s1);
   overflow: hidden;
   background-color: var(--background-color);
 }
@@ -51,13 +51,13 @@
 #overview th {
   background-color: var(--primary-color);
   color: var(--tertiary-color);
-  padding: 1.2rem;
+  padding: 1 var(--s2);
   font-weight: bold;
   border-bottom: 2px solid var(--tertiary-color);
 }
 
 #overview td {
-  padding: 1.2rem;
+  padding: 1 var(--s2);
   background-color: var(--primary-color);
   border-bottom: 1px solid var(--tertiary-color);
   color: var(--tertiary-color);

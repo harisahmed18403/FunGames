@@ -1,12 +1,11 @@
 <template>
   <main>
-    <div>
-      <div class="flex center column">
-        <CurrentPlayer :current-player="currentPlayer" :message="message" />
-        <C4Board :board="board" :pause-input="pauseInput" @column-clicked="addPiece" />
-        <button @click="resetBoard">Reset Board</button>
-      </div>
+    <div class="flex center column gap-2">
+      <CurrentPlayer :current-player="currentPlayer" :message="message" />
+      <C4Board :board="board" :pause-input="pauseInput" @column-clicked="addPiece" />
+      <button @click="openModal">Reset Board</button>
     </div>
+    <ResetModal :modalVisible="modalVisible" @close="closeModal" @submit="submitModal" />
   </main>
 </template>
 <script setup lang="ts">
@@ -15,6 +14,7 @@ import { useRouter } from 'vue-router'
 import { usePlayers } from '@/stores/store'
 import C4Board from '@/components/C4/C4Board.vue'
 import CurrentPlayer from '@/components/CurrentPlayer.vue'
+import ResetModal from '@/components/ResetModal.vue'
 
 // Board setup
 const minRows = 6
@@ -29,11 +29,26 @@ const currentPlayer = ref<number>(0)
 const pauseInput = ref<boolean>(false)
 const message = ref('')
 
+const modalVisible = ref<boolean>(false)
+
 const router = useRouter()
 
 onMounted(() => {
   resetBoard()
 })
+
+function openModal() {
+  modalVisible.value = true
+}
+
+function closeModal() {
+  modalVisible.value = false
+}
+
+function submitModal() {
+  resetBoard()
+  modalVisible.value = false
+}
 
 function resetBoard() {
   board.value = []

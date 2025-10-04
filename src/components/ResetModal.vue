@@ -1,15 +1,17 @@
 <template>
-  <div v-if="props.modalVisible" id="modalBg">
-    <div class="modal">
-      <div class="inner">
-        <h2>Are you sure?</h2>
-        <div class="flex between w-100">
-          <button @click="emit('close')">Cancel</button>
-          <button @click="emit('submit')">Yes</button>
+  <transition name="fade" mode="out-in">
+    <div v-if="props.modalVisible" id="modalBg">
+      <div class="modal">
+        <div class="flex column gap-1">
+          <h2>Are you sure?</h2>
+          <div class="flex between w-100">
+            <button @click="emit('close')">Cancel</button>
+            <button @click="emit('submit')">Yes</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <style scoped>
 #modalBg {
@@ -32,17 +34,20 @@
   align-items: center;
   justify-content: center;
   background-color: var(--primary-color);
+  border: var(--s01) solid var(--tertiary-color);
   border-radius: var(--b-radius);
-  width: 50vw;
-  height: 40vh;
-  animation: slideIn 0.4s forwards;
+  width: 80vw;
+  height: 30vh;
 }
 
-@keyframes slideIn {
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.4s ease;
 }
 </style>
 <script setup lang="ts">

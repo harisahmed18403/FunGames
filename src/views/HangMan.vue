@@ -1,40 +1,42 @@
 <template>
   <main>
-    <div class="flex column center gap-3 w-100">
-      <h2 v-if="message">{{ message }}</h2>
-      <h2 v-else>Player {{ currentPlayer + 1 }} turn</h2>
+    <div id="mygrid">
+      <div class="flex column center">
+        <CurrentPlayer :current-player="currentPlayer" :message="message" />
+      </div>
 
-      <HMBoard
-        :guess="currentGuess"
-        :tries-left="triesLeft"
-        :max-tries="maxTries"
-        :current-player="currentPlayer"
-      />
+      <div class="flex column center">
+        <HMBoard
+          :guess="currentGuess"
+          :tries-left="triesLeft"
+          :max-tries="maxTries"
+          :current-player="currentPlayer"
+        />
+      </div>
 
-      <div class="letters">
-        <button
-          @click="guessLetter(letter)"
-          class="letter"
-          v-for="letter in lowercaseLetters"
-          :disabled="attemptedLetters[letter]"
-        >
-          {{ letter }}
-        </button>
+      <div class="flex column center">
+        <div id="keyboard">
+          <button
+            @click="guessLetter(letter)"
+            class="letter"
+            v-for="letter in lowercaseLetters"
+            :disabled="attemptedLetters[letter]"
+          >
+            {{ letter }}
+          </button>
+        </div>
       </div>
     </div>
   </main>
 </template>
 <style scoped>
-.letters {
-  display: flex;
-  gap: 1rem;
-  max-width: 40vw;
-  flex-wrap: wrap;
+#mygrid {
+  display: grid;
+  grid-template-rows: 1fr 3fr 2fr;
+  width: 100%;
+  height: 80vh;
   align-items: center;
   justify-content: center;
-}
-.letter {
-  text-transform: uppercase;
 }
 </style>
 <script setup lang="ts">
@@ -45,6 +47,7 @@ import { getRandomWord } from '@/utils/api'
 import { randomInteger, lowercaseLetters } from '@/utils/generic'
 
 import HMBoard from '@/components/HM/HMBoard.vue'
+import CurrentPlayer from '@/components/CurrentPlayer.vue'
 
 // Game Settings
 const wordLength = ref<{ minLen: number; maxLen: number }>({

@@ -1,26 +1,17 @@
 <template>
-  <div class="flex center column">
-    <div class="container" :style="getContainerStyle()">
-      <div class="carousel" :style="getCarouselStyle(currentPlayer)">
-        <div class="item" v-for="(tries, player) in triesLeft" :style="getItemStyle(player)">
-          <p>
-            <span :style="`color: ${playersStore.playerColor(player)}`">{{
-              playerSymbols[player]
-            }}</span>
-            {{ tries }} attempts
-          </p>
-          <div class="hangman">
-            <div class="inner" v-for="i in hman.length" :key="i">
-              <span v-for="j in hman[0].length" :key="j" :style="getHmanCellStyle(i, player)">
-                {{ hman[i - 1][j - 1] }}
-              </span>
-            </div>
-          </div>
+  <div class="flex column center h-100 w-100">
+    <div class="flex column center">
+      <h3>{{ playerSymbols[currentPlayer] }} {{ triesLeft[currentPlayer] }} attempts left</h3>
+      <div class="hangman">
+        <div class="inner" v-for="i in hman.length" :key="i">
+          <span v-for="j in hman[0].length" :key="j" :style="getHmanCellStyle(i, currentPlayer)">
+            {{ hman[i - 1][j - 1] }}
+          </span>
         </div>
       </div>
     </div>
 
-    <div class="flex gap-2 mt-3">
+    <div class="flex gap-2 mt-1">
       <template v-if="guess.length == 0">
         <div class="letter">
           <h2>Loading</h2>
@@ -35,49 +26,19 @@
   </div>
 </template>
 <style scoped>
-:root {
-  --carousel-height: 5rem;
-}
 .letter {
-  font-size: large;
+  font-size: var(--font-size-heading);
   border-bottom: thin solid black;
   text-transform: uppercase;
-}
-
-.container {
-  margin: 0 auto;
-  position: relative;
-  perspective: 1000px;
-}
-
-.carousel {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  transform-style: preserve-3d;
-  transition: transform 1s;
-}
-
-.item {
-  display: block;
-  position: absolute;
-  background: var(--primary-color);
-  border: 0.1rem solid var(--tertiary-color);
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0rem 0.1rem 1px black;
-}
-
-.item p {
-  color: var(--tertiary-color);
 }
 
 .hangman {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0px;
-  padding: 0px;
+  justify-content: center;
+  height: 100%;
+  font-size: var(--font-size-heading);
   gap: 0.6ch;
 }
 
@@ -129,14 +90,6 @@ function getHmanStage(triesLeft: number) {
   return hmanStage
 }
 
-const getContainerStyle = () => {
-  const widthRem = Math.max(playersStore.numPlayers + 2, 10)
-  return {
-    width: `${widthRem}rem`,
-    height: '150px',
-  }
-}
-
 const getCarouselStyle = (currentPlayer: number) => {
   const rotation = currentPlayer * (-360 / playersStore.numPlayers)
   return {
@@ -148,13 +101,11 @@ const getCarouselStyle = (currentPlayer: number) => {
 }
 
 const getItemStyle = (player: number) => {
-  const widthRem = Math.max(playersStore.numPlayers + 2, 10)
   const rotation = (360 / playersStore.numPlayers) * player
+  const radius = 0
   return {
-    width: `${widthRem}rem`,
-    height: '150px',
     color: playersStore.playerColor(player),
-    transform: `rotateY(${rotation}deg) translateZ(250px)`,
+    transform: `rotateY(${rotation}deg) translateZ(${radius}px) translate(-50%, -50%)`,
   }
 }
 

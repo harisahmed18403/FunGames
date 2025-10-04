@@ -21,19 +21,13 @@
       </div>
       <div class="flex center column row gap-1 h-100">
         <template v-for="route in routes">
-          <RouterLink v-if="route.ignore !== true" :to="route.path" class="large">{{
-            route.name
-          }}</RouterLink>
+          <RouterLink v-if="route.ignore !== true" :to="route.path">{{ route.name }}</RouterLink>
         </template>
       </div>
     </div>
   </main>
 </template>
-<style scoped>
-.large {
-  font-size: 1rem;
-}
-</style>
+
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { routes } from '@/router'

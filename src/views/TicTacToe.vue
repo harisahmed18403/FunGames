@@ -1,19 +1,16 @@
 <template>
   <main>
-    <div class="grid">
-      <div class="flex column center w-100 h-100"></div>
-      <div class="flex column center w-100 h-100">
-        <CurrentPlayer :current-player="currentPlayer" :message="message" />
-        <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
+    <div class="flex column center w-100 h-100 mb-1">
+      <CurrentPlayer :current-player="currentPlayer" :message="message" />
+      <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
+    </div>
+    <div class="flex column center w-100 h-100 gap-1">
+      <div class="flex gap-1">
+        <button @click="decrementSize">-</button>
+        <span>Size: {{ size }}</span>
+        <button @click="incrementSize">+</button>
       </div>
-      <div class="flex column center w-100 h-100 gap-1">
-        <div class="flex gap-1">
-          <button @click="decrementSize">-</button>
-          <span>Size: {{ size }}</span>
-          <button @click="incrementSize">+</button>
-        </div>
-        <button @click="openModal">Reset</button>
-      </div>
+      <button @click="openModal">Reset</button>
     </div>
     <ResetModal :modalVisible="modalVisible" @close="closeModal" @submit="submitModal" />
   </main>

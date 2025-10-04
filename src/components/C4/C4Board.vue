@@ -1,49 +1,40 @@
 <template>
-  <div>
-    <div class="cell-container flex column center">
-      <div v-for="(row, rowIndex) in props.board" :key="`row-${rowIndex}`" class="flex">
-        <div v-for="(cell, colIndex) in row" :key="`cell-${colIndex}`" class="cell">
-          <div
-            v-if="cell > -1"
-            class="piece"
-            :style="`background-color: ${playersStore.playerColor(cell)}`"
-          >
-            <p>{{ playerSymbols[cell] }}</p>
-          </div>
-          <div
-            v-else-if="colIndex == hoverCol"
-            :class="`piece ${hoverClass(rowIndex, colIndex)}`"
-          ></div>
-        </div>
+  <div id="board" :style="`--cols: ${props.board?.[0]?.length ?? 7};`">
+    <template v-for="(row, rowIndex) in props.board">
+      <div v-for="(cell, colIndex) in row" :key="`row-${rowIndex}-cell-${colIndex}`" class="cell">
+        <p
+          v-if="cell > -1"
+          class="piece"
+          :style="`background-color: ${playersStore.playerColor(cell)}`"
+        >
+          {{ playerSymbols[cell] }}
+        </p>
+        <div v-else-if="colIndex == hoverCol" :class="`${hoverClass(rowIndex, colIndex)}`"></div>
       </div>
-      <div class="flex mt-1">
-        <div v-for="col in cols" :key="`col-${col}`" class="flex column center">
-          <div class="cell controls">
-            <button
-              @click="emit('columnClicked', col - 1)"
-              @mouseover="hoverCol = col - 1"
-              @mouseleave="hoverCol = null"
-            >
-              {{ col }}
-            </button>
-          </div>
-        </div>
+    </template>
+    <template v-for="col in cols">
+      <div class="cell controls">
+        <button
+          @click="emit('columnClicked', col - 1)"
+          @mouseover="hoverCol = col - 1"
+          @mouseleave="hoverCol = null"
+        >
+          {{ col }}
+        </button>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 <style scoped>
-.cell:hover {
-  background-color: var(--primary-color);
-}
 .piece {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--primary-color);
-  width: 3.5rem;
-  height: 3.5rem;
+  border: thin solid var(--tertiary-color);
   border-radius: 50%;
+  width: 85%;
+  height: 85%;
 }
 
 .piece.hover-col {
@@ -56,11 +47,12 @@
 }
 
 button {
-  min-width: 4rem;
-  width: 4rem;
-  height: 4rem;
   padding: 0;
-
+  margin: 0;
+  min-width: 0px;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
   font-weight: bold;
 }
 </style>
@@ -76,7 +68,6 @@ const hoverCol = ref<number | null>(null)
 
 const props = defineProps<{
   board: number[][]
-
   pauseInput: boolean
 }>()
 
@@ -96,7 +87,7 @@ const hoverClass = (row: number, col: number) => {
     props.board[row][col] == -1 &&
     (row == props.board.length - 1 || props.board[row + 1][col] !== -1)
   ) {
-    return 'hover-col'
+    return 'piece hover-col'
   }
   return ''
 }
