@@ -30,49 +30,7 @@
   </main>
 </template>
 
-<style scoped>
-.table-wrapper {
-  padding: var(--s2);
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-#overview {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--font-size-heading);
-  text-align: center;
-  box-shadow: 0 0 var(--s05) rgba(0, 0, 0, 0.1);
-  border-radius: var(--s1);
-  overflow: hidden;
-  background-color: var(--background-color);
-}
-
-#overview th {
-  background-color: var(--primary-color);
-  color: var(--tertiary-color);
-  padding: 1 var(--s2);
-  font-weight: bold;
-  border-bottom: 2px solid var(--tertiary-color);
-}
-
-#overview td {
-  padding: 1 var(--s2);
-  background-color: var(--primary-color);
-  border-bottom: 1px solid var(--tertiary-color);
-  color: var(--tertiary-color);
-}
-
-#overview tr:last-child td {
-  border-bottom: none;
-}
-
-.player-cell {
-  color: var(--primary-color);
-  font-weight: bold;
-  border-radius: 0.4rem;
-}
-</style>
+<style scoped></style>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
