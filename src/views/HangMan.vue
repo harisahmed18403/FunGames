@@ -41,8 +41,9 @@
 </style>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { useScore, usePlayers } from '@/stores/store'
+import { usePlayers } from '@/stores/store'
 import { getRandomWord } from '@/utils/api'
 import { randomInteger, lowercaseLetters } from '@/utils/generic'
 
@@ -64,7 +65,6 @@ const message = ref<string>('')
 // Player setup
 const playersStore = usePlayers()
 const currentPlayer = ref<number>(0)
-const scoreStore = useScore()
 
 onMounted(() => {
   setTries()
@@ -115,9 +115,11 @@ function guessLetter(guessLetter: string) {
   }
 }
 
+// Return true is the game has ended, false otherwise
 function checkWin() {
-  if (triesLeft.value[0] <= 0 && triesLeft.value[1] <= 0) {
-    scoreStore.tieScore += 1
+  const total = triesLeft.value.reduce((a, b) => a + b, 0)
+  if (total <= 0) {
+    playersStore.updateScore(null)
     displayMessage('Tie!')
     return true
   }
@@ -130,13 +132,8 @@ function checkWin() {
   })
 
   if (allMatch === true) {
-    if (currentPlayer.value == 0) {
-      scoreStore.player1Score += 1
-      displayMessage('Player 1 wins!')
-    } else {
-      scoreStore.player2Score += 1
-      displayMessage('Player 2 wins!')
-    }
+    playersStore.updateScore(currentPlayer.value)
+    displayMessage(`Player ${currentPlayer.value + 1} wins!`)
     return true
   }
 
