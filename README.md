@@ -1,33 +1,19 @@
-# vue-project
+# FunGames
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple TypeScript + Vue.JS project with 3 table-top games
 
-## Recommended IDE Setup
+1. Tic Tac Toe
+2. Connect 4
+3. Hang-Man
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Play the game <a href='https://harisahmed18403.github.io/FunGames/'>here</a>
 
-## Type Support for `.vue` Imports in TS
+# Aims of the project
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### Dynamic: The number of players can be dynamically changed at any point
 
-## Customize configuration
+- Games can accomodate any number of players (minimum 2 players)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Expandable: Add new games without modifying existing code
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+### Mobile Friendly: Scale the content to fit large, small, vertical and horizontal screens.

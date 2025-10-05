@@ -84,29 +84,10 @@ const hmanStages = computed(() => {
   return props.triesLeft.map((tries, player) => getHmanStage(tries))
 })
 
-// Return the 'stage' at which the hman is at
+// Return the 'stage' at which the hang-man is at
 function getHmanStage(triesLeft: number) {
   let hmanStage = hman.length - Math.floor((triesLeft * hman.length) / props.maxTries)
   return hmanStage
-}
-
-const getCarouselStyle = (currentPlayer: number) => {
-  const rotation = currentPlayer * (-360 / playersStore.numPlayers)
-  return {
-    transform: `rotateY(${rotation}deg)`,
-    WebkitTransform: `rotateY(${rotation}deg)`,
-    MozTransform: `rotateY(${rotation}deg)`,
-    OTransform: `rotateY(${rotation}deg)`,
-  }
-}
-
-const getItemStyle = (player: number) => {
-  const rotation = (360 / playersStore.numPlayers) * player
-  const radius = 0
-  return {
-    color: playersStore.playerColor(player),
-    transform: `rotateY(${rotation}deg) translateZ(${radius}px) translate(-50%, -50%)`,
-  }
 }
 
 const getHmanCellStyle = (i: number, player: number) => {

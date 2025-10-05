@@ -1,18 +1,11 @@
 import { ref, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { routes } from '@/router'
 
 import type { RouteRecordNameGeneric } from 'vue-router'
 
 import { hsvToHex } from '@/utils/generic'
-
-export const useScore = defineStore('score', () => {
-  const player1Score = ref(0)
-  const player2Score = ref(0)
-  const tieScore = ref(0)
-
-  return { player1Score, player2Score, tieScore }
-})
 
 export interface Stat {
   wins: number
@@ -30,6 +23,8 @@ export const usePlayers = defineStore('players', () => {
   const numPlayers = ref<number>(3)
   const playerStats = ref<PlayerStat[]>([])
   const playerColors = getPlayerColors(maxPlayers)
+
+  const router = useRouter()
 
   const addPlayer = () => {
     if (numPlayers.value < maxPlayers) {
@@ -103,7 +98,8 @@ export const usePlayers = defineStore('players', () => {
     })
   })
 
-  const updateScore = (winningPlayer: number | null, routeName: RouteRecordNameGeneric) => {
+  const updateScore = (winningPlayer: number | null) => {
+    const routeName = router.currentRoute.value.name
     if (winningPlayer === null) {
       playerStats.value.forEach((stat: PlayerStat) => {
         stat[String(routeName)].ties++

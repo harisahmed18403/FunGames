@@ -1,13 +1,13 @@
 <template>
   <main>
-    <div class="flex column center w-100 h-100 mb-1">
+    <div class="flex column center w-100 h-100">
       <CurrentPlayer :current-player="currentPlayer" :message="message" />
       <TTTBoard :board="board" :pause-input="pauseInput" @cellClicked="setCell" />
     </div>
-    <div class="flex column center w-100 h-100 gap-1">
-      <div class="flex gap-1">
+    <div class="flex column center w-100 h-100 gap-1 mt-3">
+      <div class="flex center gap-1">
         <button @click="decrementSize">-</button>
-        <span>Size: {{ size }}</span>
+        <h4>Size: {{ size }}</h4>
         <button @click="incrementSize">+</button>
       </div>
       <button @click="openModal">Reset</button>
@@ -27,7 +27,6 @@
 </style>
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 
 import { usePlayers } from '@/stores/store'
 import CurrentPlayer from '@/components/CurrentPlayer.vue'
@@ -47,8 +46,6 @@ const board = reactive<number[][]>([])
 const message = ref('')
 
 const modalVisible = ref<boolean>(false)
-
-const router = useRouter()
 
 onMounted(() => {
   resetBoard()
@@ -82,11 +79,11 @@ function setCell(col: number, row: number) {
   if (board[row][col] === -1) {
     board[row][col] = currentPlayer.value
     if (checkWin()) {
-      playersStore.updateScore(currentPlayer.value, router.currentRoute.value.name)
+      playersStore.updateScore(currentPlayer.value)
       gameEnd(`Player ${currentPlayer.value + 1} wins!`)
       return
     } else if (checkTie()) {
-      playersStore.updateScore(null, router.currentRoute.value.name)
+      playersStore.updateScore(null)
       gameEnd(`Its a Tie!`)
       return
     }

@@ -41,7 +41,6 @@
 </style>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 import { usePlayers } from '@/stores/store'
 import { getRandomWord } from '@/utils/api'
@@ -55,16 +54,16 @@ const wordLength = ref<{ minLen: number; maxLen: number }>({
   minLen: 3,
   maxLen: 7,
 })
-const maxTries = ref<number>(10)
+const maxTries = ref<number>(5)
 const triesLeft = ref<number[]>([])
 const currentWord = ref<string[]>([])
 const currentGuess = ref<string[]>([])
 const attemptedLetters = ref<Record<string, boolean>>({})
-const message = ref<string>('')
 
 // Player setup
 const playersStore = usePlayers()
 const currentPlayer = ref<number>(0)
+const message = ref<string>('')
 
 onMounted(() => {
   setTries()
@@ -78,7 +77,6 @@ function setTries() {
 async function setRandomWord() {
   const length = randomInteger(wordLength.value.minLen, wordLength.value.maxLen)
   const response = await getRandomWord(length)
-  console.log(response)
   if (response && response.data) {
     currentWord.value = []
     currentGuess.value = []
@@ -103,9 +101,7 @@ function guessLetter(guessLetter: string) {
     }
   })
 
-  let gameOver = checkWin()
-
-  if (gameOver === true) {
+  if (checkWin() === true) {
     return
   }
 
@@ -150,10 +146,15 @@ function displayMessage(msg: string) {
 }
 
 function switchPlayer() {
-  currentPlayer.value = (currentPlayer.value + 1) % playersStore.numPlayers
+  let nextPlayer = (currentPlayer.value + 1) % playersStore.numPlayers
   // If player has no attempts left switch to the other
-  while (triesLeft.value[currentPlayer.value] <= 0) {
-    currentPlayer.value = (currentPlayer.value + 1) % playersStore.numPlayers
+  while (triesLeft.value[nextPlayer] <= 0) {
+    if ((nextPlayer = currentPlayer.value)) {
+      return
+    }
+    nextPlayer = (currentPlayer.value + 1) % playersStore.numPlayers
   }
+
+  currentPlayer.value = nextPlayer
 }
 </script>

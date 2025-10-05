@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div id="title" class="flex column center gap-3">
+    <div class="flex column center gap-3 mt-3">
       <div class="flex column center">
         <div class="flex center gap-1">
           <button
@@ -9,7 +9,7 @@
           >
             -
           </button>
-          <h1>{{ playersStore.numPlayers }}</h1>
+          <FunHeader :text="String(playersStore.numPlayers)" />
           <button
             @click="playersStore.addPlayer"
             :disabled="playersStore.numPlayers >= playersStore.maxPlayers"
@@ -17,7 +17,7 @@
             +
           </button>
         </div>
-        <h2>Player Games</h2>
+        <FunHeader text="Player Games" />
       </div>
       <div class="flex center column row gap-1 h-100">
         <RouterLink to="/tictactoe">Tic Tac Toe</RouterLink>
@@ -31,8 +31,9 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { routes } from '@/router'
 import { usePlayers } from '@/stores/store'
+
+import FunHeader from '@/components/FunHeader.vue'
 
 const playersStore = usePlayers()
 </script>

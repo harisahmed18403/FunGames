@@ -1,21 +1,13 @@
 <template>
-  <div class="flex center head pad-x-1 between">
+  <div class="head flex center pad-x-1 between">
     <RouterLink to="/" class="small">Home</RouterLink>
 
-    <div class="flex row gap-2 no-wrap scroll-x">
-      <p
-        v-for="(stat, index) in playerStore.playerStatsTotals"
-        :style="`color: ${playerStore.playerColor(index)};`"
-        class="playerStat"
-      >
-        Player {{ index + 1 }} wins: {{ stat.wins }}
-      </p>
-    </div>
+    <button @click="showSideMenu" class="small">Settings</button>
+    <SideMenu :menu-visible="menuVisible" @close="hideSideMenu" />
   </div>
 </template>
 <style scoped>
 .head {
-  justify-content: space-between;
   gap: var(--s05);
   background-color: var(--primary-color);
   color: var(--primary-color);
@@ -33,8 +25,18 @@
 }
 </style>
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { usePlayers } from '@/stores/store'
+import SideMenu from './SideMenu.vue'
 
-const playerStore = usePlayers()
+const menuVisible = ref<boolean>(false)
+const menuRef = ref<HTMLElement | null>(null)
+
+function showSideMenu() {
+  menuVisible.value = true
+}
+
+function hideSideMenu() {
+  menuVisible.value = false
+}
 </script>
