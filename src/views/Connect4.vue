@@ -10,7 +10,6 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { usePlayers } from '@/stores/store'
 import C4Board from '@/components/C4/C4Board.vue'
 import CurrentPlayer from '@/components/CurrentPlayer.vue'
@@ -30,8 +29,6 @@ const pauseInput = ref<boolean>(false)
 const message = ref('')
 
 const modalVisible = ref<boolean>(false)
-
-const router = useRouter()
 
 onMounted(() => {
   resetBoard()
@@ -70,10 +67,10 @@ function addPiece(col: number) {
     if (board.value[r][col] === -1) {
       board.value[r][col] = currentPlayer.value
       if (checkWin(r, col)) {
-        playersStore.updateScore(currentPlayer.value, router.currentRoute.value.name)
+        playersStore.updateScore(currentPlayer.value)
         displayMessage(`Player ${currentPlayer.value + 1} wins!`)
       } else if (isBoardFull()) {
-        playersStore.updateScore(null, router.currentRoute.value.name)
+        playersStore.updateScore(null)
         displayMessage("It's a tie!")
       } else {
         switchPlayer()
