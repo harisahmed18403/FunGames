@@ -61,12 +61,10 @@
 #overview th {
   background-color: var(--secondary-color);
   color: var(--tertiary-color);
-  font-size: var(--font-size-small);
   text-transform: uppercase;
 }
 
 #overview td {
-  font-size: var(--font-size-small);
   color: var(--tertiary-color);
   background-color: var(--primary-color);
 }
