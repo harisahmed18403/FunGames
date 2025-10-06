@@ -46,6 +46,10 @@
   background-color: var(--secondary-color);
 }
 
+.cell:hover {
+  background-color: var(--primary-color);
+}
+
 button {
   padding: 0;
   margin: 0;

@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex column center gap-3 mt-3">
+    <div class="flex column center gap-3 mt-3 w-100">
       <div class="flex column center">
         <div class="flex center gap-1">
           <button
@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { usePlayers } from '@/stores/store'
+import { playerSymbols } from '@/utils/generic'
 
 import FunHeader from '@/components/FunHeader.vue'
 

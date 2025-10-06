@@ -1,18 +1,26 @@
 <template>
   <Transition name="slide-right">
-    <div v-if="menuVisible" id="menuContainer" @click="handleCLickOutsideMenu">
+    <div v-if="menuVisible" id="menuContainer" @click="handleClickOutsideMenu">
       <div id="menu">
         <div class="flex" id="settings" style="justify-content: flex-end">
           <button @click="$emit('close')" class="small">X</button>
         </div>
-        <h3>Select Theme:</h3>
+        <!-- Theme -->
+        <div>
+          <h3>Select Theme:</h3>
+          <div class="theme-options">
+            <select v-model="selectedThemeIndex" @change="setTheme()">
+              <option v-for="(theme, index) in themes" :value="index" :key="index">
+                {{ theme.name }}
+              </option>
+            </select>
+          </div>
+        </div>
 
-        <div class="theme-options">
-          <select v-model="selectedThemeIndex" @change="setTheme()">
-            <option v-for="(theme, index) in themes" :value="index" :key="index">
-              {{ theme.name }}
-            </option>
-          </select>
+        <!-- Player Stats -->
+        <div>
+          <h3>Reset All Player Stats</h3>
+          <button @click="resetAllPlayerStats">Reset</button>
         </div>
       </div>
     </div>
@@ -36,7 +44,10 @@
   border-left: var(--s01) solid var(--tertiary-color);
   border-bottom-left-radius: var(--s01);
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-  padding: 0 var(--s01) 0 var(--s01);
+  padding: 0 var(--s1) 0 var(--s1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
 }
 
 #settings {
@@ -62,6 +73,7 @@
 <script setup lang="ts">
 import { themes } from '@/utils/generic'
 import { ref } from 'vue'
+import { usePlayers } from '@/stores/store'
 
 defineProps({
   menuVisible: Boolean,
@@ -70,6 +82,8 @@ defineProps({
 const emit = defineEmits(['close'])
 
 const selectedThemeIndex = ref(null)
+
+const playersScore = usePlayers()
 
 const setTheme = () => {
   if (selectedThemeIndex.value == null) {
@@ -82,9 +96,13 @@ const setTheme = () => {
   }
 }
 
-function handleCLickOutsideMenu(event: Event) {
+function handleClickOutsideMenu(event: Event) {
   if (event.target == event.currentTarget) {
     emit('close')
   }
+}
+
+function resetAllPlayerStats() {
+  playersScore.setPlayerStats(playersScore.numPlayers, false)
 }
 </script>

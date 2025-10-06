@@ -46,13 +46,13 @@ export const usePlayers = defineStore('players', () => {
     { immediate: true },
   )
 
-  function setPlayerStats(numPlayers: number) {
+  function setPlayerStats(numPlayers: number, retainOld: boolean = true) {
     let newPlayerStats = []
     // Game stats
     for (let i = 0; i < numPlayers; i++) {
       // Retain exiting players info
 
-      if (playerStats.value[i] !== undefined) {
+      if (playerStats.value[i] !== undefined && retainOld) {
         newPlayerStats.push(playerStats.value[i])
       } else {
         const stat: PlayerStat = {}
@@ -125,6 +125,7 @@ export const usePlayers = defineStore('players', () => {
     maxPlayers,
     addPlayer,
     removePlayer,
+    setPlayerStats,
     playerStats,
     playerStatsTotals,
     winningPlayer,

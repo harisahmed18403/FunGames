@@ -42,13 +42,11 @@
 </template>
 <style scoped>
 .table-wrapper {
-  height: 100%;
-  width: 100%;
-  overflow-x: auto;
+  display: flex;
+  overflow-y: auto;
 }
 
 #overview {
-  width: 100%;
   border-collapse: collapse;
   font-family: var(--font-family, 'Roboto Mono', monospace);
   text-align: center;
@@ -56,13 +54,13 @@
 
 #overview th,
 #overview td {
-  padding: var(--s011);
+  padding: var(--s05);
   border: var(--s01) solid var(--tertiary-color);
 }
 
 #overview th {
   background-color: var(--secondary-color);
-  color: var(--primary-color);
+  color: var(--tertiary-color);
   font-size: var(--font-size-small);
   text-transform: uppercase;
 }
@@ -70,20 +68,13 @@
 #overview td {
   font-size: var(--font-size-small);
   color: var(--tertiary-color);
+  background-color: var(--primary-color);
 }
 
 .player-cell {
   font-weight: bold;
   color: var(--primary-color);
   border-radius: var(--b-radius);
-}
-
-#overview tr:nth-child(even) {
-  background-color: var(--primary-color);
-}
-
-#overview tr:nth-child(odd) {
-  background-color: var(--secondary-color);
 }
 </style>
 
