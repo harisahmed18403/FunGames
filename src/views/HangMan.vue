@@ -150,11 +150,13 @@ function switchPlayer() {
   // If player has no attempts left switch to the other
   while (triesLeft.value[nextPlayer] <= 0) {
     if ((nextPlayer = currentPlayer.value)) {
+      checkWin()
       return
     }
-    nextPlayer = (currentPlayer.value + 1) % playersStore.numPlayers
+    nextPlayer = (nextPlayer + 1) % playersStore.numPlayers
   }
 
   currentPlayer.value = nextPlayer
+  return true
 }
 </script>
