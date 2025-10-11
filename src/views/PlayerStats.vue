@@ -4,11 +4,11 @@
       <table id="overview">
         <thead>
           <tr>
-            <th>Player</th>
-            <th>Game</th>
-            <th>Wins</th>
-            <th>Losses</th>
-            <th>Ties</th>
+            <th class="td-player">Player</th>
+            <th class="td-game">Game</th>
+            <th class="td-wins">Wins</th>
+            <th class="td-losses">Losses</th>
+            <th class="td-ties">Ties</th>
           </tr>
         </thead>
         <tbody>
@@ -16,23 +16,23 @@
             <tr>
               <td
                 rowspan="1 + Object.keys(player.playerStats).length"
-                class="player-cell"
+                class="player-cell td-player"
                 :style="`background-color: ${playerStore.playerColor(player.id)}`"
               >
                 Player {{ player.id + 1 }}
               </td>
-              <td>Total</td>
-              <td>{{ player.total.wins }}</td>
-              <td>{{ player.total.losses }}</td>
-              <td>{{ player.total.ties }}</td>
+              <td class="td-game">Total</td>
+              <td class="td-wins">{{ player.total.wins }}</td>
+              <td class="td-losses">{{ player.total.losses }}</td>
+              <td class="td-ties">{{ player.total.ties }}</td>
             </tr>
 
             <tr v-for="(gameStats, gameName) in player.playerStats" :key="gameName">
-              <td></td>
-              <td>{{ gameName }}</td>
-              <td>{{ gameStats.wins }}</td>
-              <td>{{ gameStats.losses }}</td>
-              <td>{{ gameStats.ties }}</td>
+              <td class="td-player"></td>
+              <td class="td-game">{{ gameName }}</td>
+              <td class="td-wins">{{ gameStats.wins }}</td>
+              <td class="td-losses">{{ gameStats.losses }}</td>
+              <td class="td-ties">{{ gameStats.ties }}</td>
             </tr>
           </template>
         </tbody>
@@ -44,12 +44,34 @@
 .table-wrapper {
   display: flex;
   overflow-y: auto;
+  height: 70vh;
+  border: thin solid var(--tertiary-color);
 }
 
 #overview {
   border-collapse: collapse;
   font-family: var(--font-family, 'Roboto Mono', monospace);
   text-align: center;
+}
+
+.td-player {
+  width: var(--s5);
+}
+
+.td-game {
+  width: var(--s5);
+}
+
+.td-wins {
+  width: var(--s5);
+}
+
+.td-losses {
+  width: var(--s5);
+}
+
+.td-ties {
+  width: var(--s5);
 }
 
 #overview th,
@@ -72,7 +94,6 @@
 .player-cell {
   font-weight: bold;
   color: var(--primary-color);
-  border-radius: var(--b-radius);
 }
 </style>
 
